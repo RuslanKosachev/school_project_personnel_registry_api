@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.util.List;
 
 /**
- * Сервис
+ * Сервис обработки данных сотрудника
  */
 @Validated
 public interface UserServiceI {
@@ -21,19 +21,19 @@ public interface UserServiceI {
     List<UserView> getList(@Valid UserView filter);
 
     /**
-     * Вернуть сотрудника по id
+     * Возвращает сотрудника по id
      *
      * @return {@UserView}
      */
     UserView getById(Integer id);
 
     /**
-     * Сохранить(создать) нового сотрудника
+     * Сохраняет(создает) нового сотрудника
      */
     Boolean create(@Valid UserView param) throws ParseException;
 
     /**
-     * Обновить данные сотрудника
+     * Обновиляет данные сотрудника
      */
-    boolean update(@Valid UserView param) throws ParseException;
+    Boolean update(@Valid UserView param) throws ParseException;
 }

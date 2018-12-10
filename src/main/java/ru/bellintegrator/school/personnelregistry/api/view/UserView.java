@@ -86,7 +86,7 @@ public class UserView {
     private Boolean isIdentified;
 
     @Min(value = 1, message = "Id не должен быть меньше единицы")
-    private Long officeId;
+    private Integer officeId;
 
     public Integer getId() {
         return id;
@@ -192,11 +192,11 @@ public class UserView {
         isIdentified = identified;
     }
 
-    public Long getOfficeId() {
+    public Integer getOfficeId() {
         return officeId;
     }
 
-    public void setOfficeId(Long officeId) {
+    public void setOfficeId(Integer officeId) {
         this.officeId = officeId;
     }
 }

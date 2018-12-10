@@ -22,7 +22,13 @@ public class UserServiceImpl implements UserServiceI {
      * {@inheritDoc}
      */
     public UserView getById(Integer id) {
-        return null;
+        UserView sample = new UserView();
+        sample.setId(id);
+        sample.setFirstName("Виктор");
+        sample.setMiddleName("Прокопенко");
+        sample.setPosition("Ассистент");
+
+        return sample;
     }
 
     /**
@@ -36,7 +42,7 @@ public class UserServiceImpl implements UserServiceI {
     /**
      * {@inheritDoc}
      */
-    public boolean update(UserView userView) {
+    public Boolean update(UserView userView) {
         return false;
     }
 }

@@ -5,9 +5,12 @@ public class Result {
     public static final String RESULT_TRUE = "success";
     public static final String RESULT_FALSE = "no success";
 
-    private final Object  result;
+    private String result = "";
 
-    public Result(Object result) {
+    public Result() {
+    }
+
+    public Result(String result) {
         this.result = result;
     }
 
