@@ -1,15 +1,13 @@
 package ru.bellintegrator.school.personnelregistry.api.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
-import ru.bellintegrator.school.personnelregistry.api.service.UserServiceI;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorCode;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
+import ru.bellintegrator.school.personnelregistry.api.service.UserServiceI;
 
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.Valid;
-import javax.validation.Validator;
-import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,78 +20,78 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(value = "/api/user", produces = APPLICATION_JSON_VALUE)
 public class UserController {
 
-    private final UserServiceI UserServiceI;
+    private final UserServiceI userService;
 
     @Autowired
-    public UserController(UserServiceI UserServiceI, Validator validator, Validator validator1) {
-        this.UserServiceI = UserServiceI;
+    public UserController(UserServiceI userService) {
+        this.userService = userService;
     }
 
     /**
-     * Получает всех сотрудников по указанным параметрам
+     * Возвращает список сотрудников по указанным параметрам в теле запроса
      *
-     * @param userView
+     * @param view
      * @return
      */
     @PostMapping("/list")
-    public List<UserView> getList(@Valid @RequestBody UserView userView) throws Exception {
-        if (Objects.isNull(userView.getOfficeId())) {
+    public List<UserView> getList(@Valid @RequestBody UserView view) throws Exception {
+        if (Objects.isNull(view.getOfficeId())) {
             throw new ViewException(ErrorCode.OFFICE_NULL_ID);
         }
 
-        return UserServiceI.getList(userView);
+        return userService.getList(view);
     }
 
     /**
-     * Получает сотрудника по id
+     * Возвращает сотрудника по id
      *
-     * @param id
+     * @param id - уникальный идентификатор сотрудника
      * @return
      */
     @GetMapping("/{id:[\\d]+}")
     public UserView getById(@Valid @PathVariable("id") Integer id) {
-        return UserServiceI.getById(id);
+        return userService.getById(id);
     }
 
     /**
      * Сохраняет нового сотрудника
      *
-     * @param userView
-     * @return Boolean
+     * @param view
+     * @return {@code Boolean} при успешном добавлении значение - true
      */
     @PostMapping("/save")
-    public Boolean create(@Valid @RequestBody UserView userView) throws ViewException, ParseException {
-        if (Objects.isNull(userView.getOfficeId())) {
+    public Boolean create(@Valid @RequestBody UserView view) throws ViewException {
+        if (Objects.isNull(view.getOfficeId())) {
             throw new ViewException(ErrorCode.OFFICE_NULL_ID);
         }
-        if (Objects.isNull(userView.getFirstName())) {
+        if (Objects.isNull(view.getFirstName())) {
             throw new ViewException(ErrorCode.USER_NULL_FIRST_NAME);
         }
-        if (Objects.isNull(userView.getPosition())) {
+        if (Objects.isNull(view.getPosition())) {
             throw new ViewException(ErrorCode.USER_NULL_POSITION);
         }
 
-        return UserServiceI.create(userView);
+        return userService.create(view);
     }
 
     /**
-     * Обновляет данные запрашиваемого сотрудника
+     * Обновляет данные сотрудника
      *
-     * @param userView
-     * @return
+     * @param view
+     * @return {@code Boolean} при успешном обновлении значение - true
      */
     @PostMapping("/update")
-    public void update(@Valid @RequestBody UserView userView) throws Exception {
-        if (Objects.isNull(userView.getId())) {
+    public Boolean update(@Valid @RequestBody UserView view) throws Exception {
+        if (Objects.isNull(view.getId())) {
             throw new ViewException(ErrorCode.USER_NULL_ID);
         }
-        if (Objects.isNull(userView.getFirstName())) {
+        if (Objects.isNull(view.getFirstName())) {
             throw new ViewException(ErrorCode.USER_NULL_FIRST_NAME);
         }
-        if (Objects.isNull(userView.getPosition())) {
+        if (Objects.isNull(view.getPosition())) {
             throw new ViewException(ErrorCode.USER_NULL_POSITION);
         }
 
-        UserServiceI.update(userView);
+        return userService.update(view);
     }
 }

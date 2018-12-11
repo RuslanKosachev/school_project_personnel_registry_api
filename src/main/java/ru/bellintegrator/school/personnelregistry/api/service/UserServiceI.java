@@ -1,16 +1,12 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
-import org.springframework.validation.annotation.Validated;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
 
-import javax.validation.Valid;
-import java.text.ParseException;
 import java.util.List;
 
 /**
- * Сервис обработки данных сотрудника
+ * Сервис управления информацией об сотрудниках
  */
-@Validated
 public interface UserServiceI {
 
     /**
@@ -18,7 +14,7 @@ public interface UserServiceI {
      *
      * @return {@UserView}
      */
-    List<UserView> getList(@Valid UserView filter);
+    List<UserView> getList(UserView filter);
 
     /**
      * Возвращает сотрудника по id
@@ -29,11 +25,15 @@ public interface UserServiceI {
 
     /**
      * Сохраняет(создает) нового сотрудника
+     *
+     * @return {@Boolean} при успешном добавлении значение - true
      */
-    Boolean create(@Valid UserView param) throws ParseException;
+    Boolean create(UserView param);
 
     /**
      * Обновиляет данные сотрудника
+     *
+     * @return {@Boolean} при успешном обновлении значение - true
      */
-    Boolean update(@Valid UserView param) throws ParseException;
+    Boolean update(UserView param);
 }
