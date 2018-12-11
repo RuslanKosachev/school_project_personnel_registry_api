@@ -1,7 +1,7 @@
-package ru.bellintegrator.school.personnelregistry.api.view.exception;
+package ru.bellintegrator.school.personnelregistry.api.view.exception.wraper;
 
 /**
- * Класс-view с сообщением об ошибках от сервера в ответе запроса
+ * Класс-view для сообщением об ошибках от сервера
  */
 public class ErrorMessageResponse {
     private final String error;
