@@ -12,7 +12,7 @@ public class UserView {
     /**
      * Идентификатор
      */
-    @Min(value = 1, message = "Id не должен быть меньше единицы")
+    @Min(value = 1, message = "id не должен быть меньше единицы")
     private Integer id;
 
     /**

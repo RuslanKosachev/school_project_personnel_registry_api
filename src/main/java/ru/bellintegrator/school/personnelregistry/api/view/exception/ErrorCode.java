@@ -23,7 +23,7 @@ public enum ErrorCode {
     ORGANIZATION_NULL_FULL_NAME("отсуцтвует полное название организации"),
     ORGANIZATION_NULL_ADDRESS("отсуцтвует адрес организации"),
     ORGANIZATION_NULL_INN("отсуцтвует идентификационный номер налогоплательщика организации"),
-    ORGANIZATION_NULL_KPP("отсуцтвует код причины постановки на учет в налоговых органах организации");
+    ORGANIZATION_NULL_KPP("отсуцтвует код причины постановки на учет в налоговых органах");
 
     private String errorMessage;
 

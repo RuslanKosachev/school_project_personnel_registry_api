@@ -8,11 +8,11 @@ DROP TABLE IF EXISTS identification_document_catalog;
 
 -- -----------------------------------------------------------------------------------------------------
 -- справочник стран 
-CREATE TABLE IF NOT EXISTS countries_catalog
+CREATE TABLE IF NOT EXISTS country_catalog
 (
   id   SMALLINT     AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
-  code SMALLINT     NOT NULL       COMMENT 'Название страны',
-  name VARCHAR(150) NOT NULL       COMMENT 'Цифровой код страны по ISO 3166-1',
+  code SMALLINT     NOT NULL       COMMENT 'Цифровой код страны по ISO 3166-1',
+  name VARCHAR(150) NOT NULL       COMMENT 'Название страны',
 
   CONSTRAINT PK_COUNTRIES_CATALG_ID PRIMARY KEY (id)
 );
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS organization
   full_name VARCHAR(350) NOT NULL                COMMENT 'Полное название',
   inn       CHAR(10)     NOT NULL                COMMENT 'Идентификационный номер налогоплательщика',
   kpp       CHAR(9)      NOT NULL                COMMENT 'Код причины постановки на учет в налоговых органах',
-  address   VARCHAR(250) NOT NULL                COMMENT 'Регистрационный адрес',
+  address   VARCHAR(255) NOT NULL                COMMENT 'Регистрационный адрес',
   phone     CHAR(20)                             COMMENT 'Номер телефона',
   is_active BOOLEAN      DEFAULT FALSE           COMMENT 'Действующая организация, если дейтвует - true',
 
