@@ -16,7 +16,7 @@ INSERT INTO identification_document_catalog(id, code, name)
   (13, 91, 'Иные документы');
 
 -- справочник стран
-INSERT INTO countries_catalog(id, code, name)
+INSERT INTO country_catalog(id, code, name)
   VALUES
   (1, 643, 'Российская Федерация'),
   (2, 36, 'Австралия'),
@@ -69,20 +69,20 @@ INSERT INTO office(id, name, is_active, organization_id)
   (6, 'Институт социального и производственного менеджмента', true, 1);
 
 -- работник
-SET @countriesCatalogId = SELECT TOP 1 id FROM countries_catalog WHERE code = 643;
-INSERT INTO employee(id, first_name, second_name, position, is_identified, countries_catalog_id)
+SET @countryCatalogId = SELECT TOP 1 id FROM country_catalog WHERE code = 643;
+INSERT INTO employee(id, first_name, second_name, position, is_identified, country_catalog_id)
   VALUES
-  (1, 'Виктор','Прокопенко','Ассистент', true, @countriesCatalogId),
-  (2, 'Антон','Крук','Доцент', true, @countriesCatalogId),
-  (3, 'Оксана','Десятова','Доцент', true, @countriesCatalogId),
-  (4, 'Антонина','Шевченко','Профессор', true, @countriesCatalogId),
-  (5, 'Анатолий','Дмитров','Заведующий кафедрой ИнЭТМ', true, @countriesCatalogId),
+  (1, 'Виктор','Прокопенко','Ассистент', true, @countryCatalogId),
+  (2, 'Антон','Крук','Доцент', true, @countryCatalogId),
+  (3, 'Оксана','Десятова','Доцент', true, @countryCatalogId),
+  (4, 'Антонина','Шевченко','Профессор', true, @countryCatalogId),
+  (5, 'Анатолий','Дмитров','Заведующий кафедрой ИнЭТМ', true, @countryCatalogId),
   (6, 'Иван','Кобзар','Директор', true, @countriesCatalogId),
-  (7, 'Виктор','Грачь','Заместитель директора по научно-исследовательской работе', true, @countriesCatalogId),
-  (8, 'Ольга','Буткова','Заместитель директора по воспитательной работе', true, @countriesCatalogId),
-  (9, 'Алина','Мелова', 'Заместитель директора по учебной работе', true, @countriesCatalogId),
-  (10, 'Михаил','Савицкий','Ассистент', true, @countriesCatalogId),
-  (11, 'Артем','Крава','Ассистент', true, @countriesCatalogId);
+  (7, 'Виктор','Грачь','Заместитель директора по научно-исследовательской работе', true, @countryCatalogId),
+  (8, 'Ольга','Буткова','Заместитель директора по воспитательной работе', true, @countryCatalogId),
+  (9, 'Алина','Мелова', 'Заместитель директора по учебной работе', true, @countryCatalogId),
+  (10, 'Михаил','Савицкий','Ассистент', true, @countryCatalogId),
+  (11, 'Артем','Крава','Ассистент', true, @countryCatalogId);
 
 -- документ удостоверяющих личность работника
 SET @identificationDocumentCatalogId = SELECT id FROM identification_document_catalog WHERE code = 21;

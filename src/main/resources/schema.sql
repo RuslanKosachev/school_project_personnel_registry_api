@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS employee_document;
 DROP TABLE IF EXISTS employee;
 DROP TABLE IF EXISTS office;
 DROP TABLE IF EXISTS organization;
-DROP TABLE IF EXISTS countries_catalog;
+DROP TABLE IF EXISTS country_catalog;
 DROP TABLE IF EXISTS identification_document_catalog;
 
 -- -----------------------------------------------------------------------------------------------------
@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS country_catalog
 
   CONSTRAINT PK_COUNTRIES_CATALG_ID PRIMARY KEY (id)
 );
-COMMENT ON TABLE  countries_catalog      IS 'Справочник стран';
+COMMENT ON TABLE  country_catalog      IS 'Справочник стран';
 
-CREATE UNIQUE INDEX UX_COUNTRIES_CATALOG_CODE ON countries_catalog(code);
-CREATE UNIQUE INDEX UX_COUNTRIES_CATALOG_NAME ON countries_catalog(name);
+CREATE UNIQUE INDEX UX_COUNTRIES_CATALOG_CODE ON country_catalog(code);
+CREATE UNIQUE INDEX UX_COUNTRIES_CATALOG_NAME ON country_catalog(name);
 
 -- ------------------------------------------------------------------------------------------------------
 -- справочник видов документов, удостоверяющих личность физического лица
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS employee
   position             VARCHAR(100) NOT NULL                COMMENT 'Должность',
   phone                CHAR(20)                             COMMENT 'Телефон',
   is_identified        BOOLEAN      DEFAULT FALSE           COMMENT 'Работающий или не работающий, если работающий - true',
-  countries_catalog_id SMALLINT                             COMMENT 'Уникальный идентификатор страны',
+  country_catalog_id SMALLINT                             COMMENT 'Уникальный идентификатор страны',
 
   CONSTRAINT PK_EMPLOYEE_ID PRIMARY KEY (id)
 );
@@ -104,12 +104,12 @@ COMMENT ON TABLE employee IS 'Сотрудник';
 CREATE INDEX IX_EMPLOYEE_FIRST_NAME           ON employee(first_name);
 CREATE INDEX IX_EMPLOYEE_SECOND_NAME          ON employee(second_name);
 CREATE INDEX IX_EMPLOYEE_MIDDLE_NAME          ON employee(middle_name);
-CREATE INDEX IX_EMPLOYEE_COUNTRIES_CATALOG_ID ON employee(countries_catalog_id);
+CREATE INDEX IX_EMPLOYEE_COUNTRY_CATALOG_ID   ON employee(country_catalog_id);
 
 ALTER TABLE employee
   ADD CONSTRAINT FK_EMPLOYEE_COUNTRIES_CATALOG_ID
-    FOREIGN KEY (countries_catalog_id)
-      REFERENCES countries_catalog(id)
+    FOREIGN KEY (country_catalog_id)
+      REFERENCES country_catalog(id)
       ON DELETE SET NULL;
 			
 -- --------------------------------------------------------------------------------------------------
