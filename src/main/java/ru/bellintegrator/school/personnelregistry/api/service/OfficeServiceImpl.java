@@ -24,6 +24,9 @@ public class OfficeServiceImpl implements OfficeServiceI {
     public OfficeView getById(Integer id) {
         OfficeView sample = new OfficeView();
         sample.setId(id);
+        sample.setName("Институт электронной техники и машиностроения");
+        sample.setAddress("г.Саратов");
+        sample.setOrgId(1);
 
         return sample;
     }
@@ -32,14 +35,13 @@ public class OfficeServiceImpl implements OfficeServiceI {
      * {@inheritDoc}
      */
     public Boolean create(OfficeView param) {
-        Boolean result = false;
-        return result;
+        return true;
     }
 
     /**
      * {@inheritDoc}
      */
     public Boolean update(OfficeView param) {
-        return false;
+        return true;
     }
 }
