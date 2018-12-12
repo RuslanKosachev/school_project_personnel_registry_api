@@ -19,12 +19,36 @@ public class IdentificationDocumentCatalogView {
      */
     @NotEmpty(message = "Название документа не может быть пустым")
     @Size(max = 250, message = "Наименование организации не должно превышать 250 символов")
-    public String name;
+    private String name;
 
     /**
      * Уникальный код документа по российской квалификации
      */
     @NotEmpty(message = "Название документа не может быть пустым")
     @Size(max = 2, message = "Код документа не должен превышать 2-х символов")
-    public String code;
+    private String code;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

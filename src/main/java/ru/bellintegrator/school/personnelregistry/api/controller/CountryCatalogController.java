@@ -29,7 +29,7 @@ public class CountryCatalogController {
      *
      * @return
      */
-    @PostMapping("/countries")
+    @GetMapping("/countries")
     public List<CountryCatalogView> getList() throws ViewException {
         return countryCatalogService.getList();
     }
