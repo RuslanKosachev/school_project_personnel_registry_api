@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserServiceI {
         sample.setFirstName("Виктор");
         sample.setMiddleName("Прокопенко");
         sample.setPosition("Ассистент");
+        sample.setOfficeId(2);
 
         return sample;
     }
@@ -35,8 +36,7 @@ public class UserServiceImpl implements UserServiceI {
      * {@inheritDoc}
      */
     public Boolean create(UserView userView) {
-        Boolean result = false;
-        return result;
+        return true;
     }
 
     /**

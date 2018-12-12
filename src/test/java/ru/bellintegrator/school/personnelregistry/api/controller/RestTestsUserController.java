@@ -1,6 +1,7 @@
 package ru.bellintegrator.school.personnelregistry.api.controller;
 
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
+import ru.bellintegrator.school.personnelregistry.api.view.wrapper.Data;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -17,6 +18,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
@@ -30,34 +35,36 @@ public class RestTestsUserController {
 
     @Test
     public void getByIdTest() throws URISyntaxException {
-        String baseUrl = "http://localhost:" + port + "/api/user/1";
-        URI uri = new URI(baseUrl);
+        int testId = 22;
+        String url = "http://localhost:" + port + "/api/user/" + testId;
+        URI uri = new URI(url);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
+        ResponseEntity<Data> result = restTemplate.exchange(uri, HttpMethod.GET, entity, Data.class);
+        HashMap view = (HashMap) result.getBody().getData();
 
         Assert.assertEquals(200, result.getStatusCodeValue());
-        Assert.assertTrue(result.getBody().contains("data"));
-        Assert.assertTrue(result.getBody().contains("Виктор"));
-        Assert.assertTrue(result.getBody().contains("Прокопенко"));
-        Assert.assertTrue(result.getBody().contains("Ассистент"));
+        assertThat(view.get("id"), is(testId));
+        assertThat(view.get("firstName"), is("Виктор"));
+        assertThat(view.get("position"), is("Ассистент"));
+        assertThat(view.get("officeId"), is(2));
     }
 
     @Test
     public void createTest() throws URISyntaxException {
-        String baseUrl = "http://localhost:" + port + "/api/user/save";
-        URI uri = new URI(baseUrl);
+        String url = "http://localhost:" + port + "/api/user/save";
+        URI uri = new URI(url);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         UserView sampleUser = new UserView();
-        sampleUser.setOfficeId(1);
+        sampleUser.setOfficeId(2);
         sampleUser.setFirstName("Виктор");
         sampleUser.setPosition("Ассистент");
 
@@ -67,6 +74,6 @@ public class RestTestsUserController {
 
         Assert.assertEquals(200, result.getStatusCodeValue());
         Assert.assertTrue(result.getBody().contains("result"));
-        Assert.assertTrue(result.getBody().contains("no success"));
+        Assert.assertTrue(result.getBody().contains("success"));
     }
 }
