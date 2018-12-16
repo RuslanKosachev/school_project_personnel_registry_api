@@ -1,5 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -9,6 +10,7 @@ import java.util.Objects;
 /**
  * Справочник стран
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CountryCatalogView {
     /**
      * Идентификатор

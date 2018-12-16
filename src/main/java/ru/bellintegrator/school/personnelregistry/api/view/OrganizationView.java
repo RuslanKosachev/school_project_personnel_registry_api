@@ -1,11 +1,13 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 /**
  * Организация
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrganizationView {
     /**
      * Идентификатор
