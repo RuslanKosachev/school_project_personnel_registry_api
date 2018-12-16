@@ -35,9 +35,9 @@ public class ResponseWrapperController implements ResponseBodyAdvice {
             return body;
         } else if (body instanceof Boolean) {
             if ((Boolean) body == true) {
-                return new Result(Result.RESULT_FALSE);
-            } else {
                 return new Result(Result.RESULT_TRUE);
+            } else {
+                return new Result(Result.RESULT_FALSE);
             }
         } else {
             return new Data(body);
