@@ -28,7 +28,7 @@ public class IdentificationDocumentCatalogController {
      *
      * @return
      */
-    @GetMapping("/docs")
+    @PostMapping("/docs")
     public List<IdentificationDocumentCatalogView> getList() {
         return identificationDocumentCatalogService.getList();
     }

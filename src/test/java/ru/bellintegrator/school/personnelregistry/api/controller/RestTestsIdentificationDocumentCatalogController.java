@@ -51,7 +51,7 @@ public class RestTestsIdentificationDocumentCatalogController {
 
         ResponseEntity<Data<List<IdentificationDocumentCatalogView>>> response
             = rest.exchange(uri,
-                            HttpMethod.GET,
+                            HttpMethod.POST,
                             httpEntity,
                             new ParameterizedTypeReference<Data<List<IdentificationDocumentCatalogView>>>(){});
 

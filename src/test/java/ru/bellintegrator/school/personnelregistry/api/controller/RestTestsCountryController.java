@@ -41,7 +41,7 @@ public class RestTestsCountryController {
      * @see Data
      * */
     @Test
-    public void getByIdTest() throws URISyntaxException {
+    public void getLisTest() throws URISyntaxException {
         URI uri = new URI(HOST + ":" + port + API_PATH);
 
         HttpHeaders headers = new HttpHeaders();
@@ -51,7 +51,7 @@ public class RestTestsCountryController {
 
         ResponseEntity<Data<List<CountryCatalogView>>> response
                 = rest.exchange(uri,
-                                HttpMethod.GET,
+                                HttpMethod.POST,
                                 httpEntity,
                                 new ParameterizedTypeReference<Data<List<CountryCatalogView>>>(){});
 
