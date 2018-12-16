@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS country_catalog
 
   CONSTRAINT PK_COUNTRIES_CATALG_ID PRIMARY KEY (id)
 );
-COMMENT ON TABLE  country_catalog      IS 'Справочник стран';
+COMMENT ON TABLE  country_catalog IS 'Справочник стран';
 
 CREATE UNIQUE INDEX UX_COUNTRIES_CATALOG_CODE ON country_catalog(code);
 CREATE UNIQUE INDEX UX_COUNTRIES_CATALOG_NAME ON country_catalog(name);
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS organization
 
   CONSTRAINT PK_ORGANIZATION_ID PRIMARY KEY (ID)
 );
-COMMENT ON TABLE  organization     			 IS 'Организация';
+COMMENT ON TABLE organization IS 'Организация';
 
 CREATE INDEX IX_ORGANIZATION_NAME ON organization(name);
 
@@ -63,12 +63,12 @@ CREATE UNIQUE INDEX UX_ORGANIZATION_KPP       ON organization(kpp);
 -- подразделение организации
 CREATE TABLE IF NOT EXISTS office
 (
-  id                INTEGER       NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
-  name              VARCHAR(100)                          COMMENT 'Название',
-  address           VARCHAR(255)                          COMMENT 'Регистрационный адрес',
-  phone             VARCHAR(20)                           COMMENT 'Номер телефона',
-  is_active         BOOLEAN       DEFAULT FALSE           COMMENT 'Действующее подразделение, если дейтвует - true',
-  organization_id   INTEGER                               COMMENT 'Уникальный идентификатор организации',
+  id                INTEGER      NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
+  name              VARCHAR(100) NOT NULL                COMMENT 'Название',
+  address           VARCHAR(255) NOT NULL                COMMENT 'Регистрационный адрес',
+  phone             VARCHAR(20)                          COMMENT 'Номер телефона',
+  is_active         BOOLEAN      DEFAULT FALSE           COMMENT 'Действующее подразделение, если дейтвует - true',
+  organization_id   INTEGER                              COMMENT 'Уникальный идентификатор организации',
 
   CONSTRAINT PK_OFFICE_ID PRIMARY KEY (id)
 );
@@ -95,16 +95,16 @@ CREATE TABLE IF NOT EXISTS employee
   position             VARCHAR(100) NOT NULL                COMMENT 'Должность',
   phone                CHAR(20)                             COMMENT 'Телефон',
   is_identified        BOOLEAN      DEFAULT FALSE           COMMENT 'Работающий или не работающий, если работающий - true',
-  country_catalog_id SMALLINT                             COMMENT 'Уникальный идентификатор страны',
+  country_catalog_id   SMALLINT                             COMMENT 'Уникальный идентификатор страны',
 
   CONSTRAINT PK_EMPLOYEE_ID PRIMARY KEY (id)
 );
 COMMENT ON TABLE employee IS 'Сотрудник';
 
-CREATE INDEX IX_EMPLOYEE_FIRST_NAME           ON employee(first_name);
-CREATE INDEX IX_EMPLOYEE_SECOND_NAME          ON employee(second_name);
-CREATE INDEX IX_EMPLOYEE_MIDDLE_NAME          ON employee(middle_name);
-CREATE INDEX IX_EMPLOYEE_COUNTRY_CATALOG_ID   ON employee(country_catalog_id);
+CREATE INDEX IX_EMPLOYEE_FIRST_NAME         ON employee(first_name);
+CREATE INDEX IX_EMPLOYEE_SECOND_NAME        ON employee(second_name);
+CREATE INDEX IX_EMPLOYEE_MIDDLE_NAME        ON employee(middle_name);
+CREATE INDEX IX_EMPLOYEE_COUNTRY_CATALOG_ID ON employee(country_catalog_id);
 
 ALTER TABLE employee
   ADD CONSTRAINT FK_EMPLOYEE_COUNTRIES_CATALOG_ID
