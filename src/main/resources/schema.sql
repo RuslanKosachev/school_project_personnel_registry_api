@@ -82,8 +82,8 @@ ALTER TABLE office
   ADD CONSTRAINT FK_OFFICE_ORGANIZATION_ID
     FOREIGN KEY (organization_id)
       REFERENCES organization(id)
-      ON DELETE RESTRICT;
-
+      ON DELETE RESTRICT
+      ON UPDATE CASCADE;
 -- --------------------------------------------------------------------------------------------------
 -- сотрудник
 CREATE TABLE IF NOT EXISTS employee
@@ -110,7 +110,8 @@ ALTER TABLE employee
   ADD CONSTRAINT FK_EMPLOYEE_COUNTRIES_CATALOG_ID
     FOREIGN KEY (country_catalog_id)
       REFERENCES country_catalog(id)
-      ON DELETE SET NULL;
+      ON DELETE SET NULL
+      ON UPDATE CASCADE;
 			
 -- --------------------------------------------------------------------------------------------------
 -- документ удостоверяющих личность работника
@@ -134,13 +135,15 @@ ALTER TABLE employee_document
   ADD CONSTRAINT IF NOT EXISTS FK_EMPLOYEE_DOCUMENT_IDENTIFICATION_DOCUMENT_CATALOG_ID
     FOREIGN KEY (identification_document_catalog_id)
       REFERENCES identification_document_catalog(id)
-      ON DELETE SET NULL;
+      ON DELETE SET NULL
+      ON UPDATE CASCADE;
 
 ALTER TABLE employee_document
   ADD CONSTRAINT IF NOT EXISTS FK_EMPLOYEE_DOCUMENT_EMPLOYEE_ID
     FOREIGN KEY (employee_id)
       REFERENCES employee(id)
-      ON DELETE CASCADE;
+      ON DELETE CASCADE
+      ON UPDATE CASCADE;
 
 -- --------------------------------------------------------------------------------------------------
 -- join-таблица для связи сотрудник - подразделение
@@ -160,10 +163,12 @@ ALTER TABLE employee_office
   ADD CONSTRAINT FK_EMPLOYEE_OFFICE_EMPLOYEE_ID
     FOREIGN KEY (employee_id)
       REFERENCES employee(id)
-      ON DELETE CASCADE;
+      ON DELETE CASCADE
+      ON UPDATE CASCADE;
 
 ALTER TABLE employee_office
   ADD CONSTRAINT FK_EMPLOYEE_OFFICE_OFFICE_ID
     FOREIGN KEY (office_id)
       REFERENCES office(id)
-      ON DELETE CASCADE;
+      ON DELETE CASCADE
+      ON UPDATE CASCADE;
