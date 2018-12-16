@@ -1,16 +1,23 @@
 package ru.bellintegrator.school.personnelregistry.api.view.wrapper;
 
-public class Data {
+/**
+ * Используется с целью оборачивания ответа контроллера в свойство  “data”:{...} при сериализации в json
+ *
+ * Должен содержать возвращаемые данные после контроллера в поле {@like #data}
+ *
+ * @param <T> тип который возвращает контроллер
+ */
+public class Data<T> {
 
-    private Object data;
+    private T data;
 
     public Data() { }
 
-    public Data(Object data) {
+    public Data(T data) {
         this.data = data;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 }

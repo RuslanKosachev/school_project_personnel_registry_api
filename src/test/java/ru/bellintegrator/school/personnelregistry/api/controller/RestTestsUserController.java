@@ -1,12 +1,12 @@
 package ru.bellintegrator.school.personnelregistry.api.controller;
 
+import org.springframework.core.ParameterizedTypeReference;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
-import ru.bellintegrator.school.personnelregistry.api.view.wrapper.Data;
 
+import org.junit.Ignore;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
@@ -16,64 +16,100 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+import ru.bellintegrator.school.personnelregistry.api.view.wrapper.Data;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
+import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
+/**
+ * Итеграционный rest-тест контроллера - UserController
+* */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class RestTestsUserController {
 
+    private static final String HOST = "http://localhost";
+    private static final String API_PATH = "/api/user/";
+    private static final RestTemplate rest = new RestTemplate();
+
     @LocalServerPort
-    int port;
+    private int port;
 
-    @Autowired
-    RestTemplate restTemplate;
+    /**
+     * тестирует метод getList(), строка http запроса - /api/user/list
+     * @exception URISyntaxException при синтаксической ошибки адреса uri
+     * @see Data
+     * @see UserView
+     * */
+    @Ignore
+    @Test
+    public void getListTest() throws URISyntaxException {}
 
+    /**
+     * тестирует метод getById(), строка http запроса - /api/user/{{id:[\d]+}}
+     * @exception URISyntaxException при синтаксической ошибки адреса uri
+     * @see UserView
+     * */
     @Test
     public void getByIdTest() throws URISyntaxException {
         int testId = 22;
-        String url = "http://localhost:" + port + "/api/user/" + testId;
-        URI uri = new URI(url);
+        URI uri = new URI(HOST + ":" + port + API_PATH + testId);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<Data> result = restTemplate.exchange(uri, HttpMethod.GET, entity, Data.class);
-        HashMap view = (HashMap) result.getBody().getData();
+        ResponseEntity<Data<UserView>> response = rest.exchange(uri, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<Data<UserView>>(){});
 
-        Assert.assertEquals(200, result.getStatusCodeValue());
-        assertThat(view.get("id"), is(testId));
-        assertThat(view.get("firstName"), is("Виктор"));
-        assertThat(view.get("position"), is("Ассистент"));
-        assertThat(view.get("officeId"), is(2));
+        UserView view = response.getBody().getData();
+
+        Assert.assertEquals(200, response.getStatusCodeValue());
+        if (Objects.nonNull(view)) {
+            assertThat(view.getId(), is(testId));
+            assertThat(view.getFirstName(), is("Виктор"));
+            assertThat(view.getPosition(), is("Ассистент"));
+            assertThat(view.getOfficeId(), is(2));
+        } else {
+            fail();
+        }
     }
 
+    /**
+     * тестирует метод create(), строка http запроса - /api/user/save
+     * @exception URISyntaxException при синтаксической ошибки адреса uri
+     * @see UserView
+     */
     @Test
     public void createTest() throws URISyntaxException {
-        String url = "http://localhost:" + port + "/api/user/save";
-        URI uri = new URI(url);
+        URI uri = new URI(HOST + ":" + port + API_PATH + "save");
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        UserView sampleUser = new UserView();
-        sampleUser.setOfficeId(2);
-        sampleUser.setFirstName("Виктор");
-        sampleUser.setPosition("Ассистент");
+        UserView expectedUser = new UserView();
+        expectedUser.setOfficeId(2);
+        expectedUser.setFirstName("Виктор");
+        expectedUser.setPosition("Ассистент");
+        HttpEntity<UserView> httpEntity = new HttpEntity<>(expectedUser, headers);
 
-        HttpEntity<UserView> entity = new HttpEntity<>(sampleUser, headers);
+        ResponseEntity<String> response = rest.exchange(uri, HttpMethod.POST, httpEntity, String.class);
 
-        ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
-
-        Assert.assertEquals(200, result.getStatusCodeValue());
-        Assert.assertTrue(result.getBody().contains("result"));
-        Assert.assertTrue(result.getBody().contains("success"));
+        Assert.assertEquals(200, response.getStatusCodeValue());
+        Assert.assertTrue(response.getBody().contains("result"));
+        Assert.assertTrue(response.getBody().contains("success"));
     }
+
+    /**
+     * тестирует метод update(), строка http запроса - /api/user/update
+     * @see UserView
+     * */
+    @Ignore
+    @Test
+    public void updateTest() throws URISyntaxException {}
 }

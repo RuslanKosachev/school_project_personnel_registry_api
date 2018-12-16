@@ -1,5 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import javax.validation.constraints.*;
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
  * сотрудник
  */
 @ApiModel(description = "Сотрудник")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserView {
     /**
      * Идентификатор

@@ -57,7 +57,7 @@ public class UserController {
      * Сохраняет нового сотрудника
      *
      * @param view
-     * @return {@code Boolean} при успешном добавлении значение - true
+     * @return true при успешном обновлении значение
      */
     @PostMapping("/save")
     public Boolean create(@Valid @RequestBody UserView view) throws ViewException {
@@ -78,7 +78,7 @@ public class UserController {
      * Обновляет данные сотрудника
      *
      * @param view
-     * @return {@code Boolean} при успешном обновлении значение - true
+     * @return true при успешном обновлении значение
      */
     @PostMapping("/update")
     public Boolean update(@Valid @RequestBody UserView view) throws Exception {
