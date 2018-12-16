@@ -1,6 +1,8 @@
 package ru.bellintegrator.school.personnelregistry.api.controller.exception;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.wraper.ErrorMessageResponse;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
@@ -12,6 +14,7 @@ import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewExcepti
 public class ExceptionHandlerController {
 
     @ExceptionHandler(ViewException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     protected ErrorMessageResponse handleException(ViewException e) {
         return new ErrorMessageResponse(e.getMessage());
     }
