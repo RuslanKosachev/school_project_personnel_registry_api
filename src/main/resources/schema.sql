@@ -10,9 +10,9 @@ DROP TABLE IF EXISTS identification_document_catalog;
 -- справочник стран 
 CREATE TABLE IF NOT EXISTS country_catalog
 (
-  id   SMALLINT     AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
-  code SMALLINT     NOT NULL       COMMENT 'Цифровой код страны по ISO 3166-1',
-  name VARCHAR(150) NOT NULL       COMMENT 'Название страны',
+  id   SMALLINT     NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
+  code VARCHAR(3)   NOT NULL                COMMENT 'Цифровой код страны по ISO 3166-1',
+  name VARCHAR(150) NOT NULL                COMMENT 'Название страны',
 
   CONSTRAINT PK_COUNTRIES_CATALG_ID PRIMARY KEY (id)
 );
@@ -43,9 +43,9 @@ CREATE TABLE IF NOT EXISTS organization
   id        INTEGER      NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
   name      VARCHAR(100) NOT NULL                COMMENT 'Сокращенное название',
   full_name VARCHAR(350) NOT NULL                COMMENT 'Полное название',
-  inn       CHAR(10)     NOT NULL                COMMENT 'Идентификационный номер налогоплательщика',
+  inn       CHAR(12)     NOT NULL                COMMENT 'Идентификационный номер налогоплательщика',
   kpp       CHAR(9)      NOT NULL                COMMENT 'Код причины постановки на учет в налоговых органах',
-  address   VARCHAR(255) NOT NULL                COMMENT 'Регистрационный адрес',
+  address   VARCHAR(350) NOT NULL                COMMENT 'Регистрационный адрес',
   phone     CHAR(20)                             COMMENT 'Номер телефона',
   is_active BOOLEAN      DEFAULT FALSE           COMMENT 'Действующая организация, если дейтвует - true',
 
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS office
 (
   id                INTEGER      NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
   name              VARCHAR(100) NOT NULL                COMMENT 'Название',
-  address           VARCHAR(255) NOT NULL                COMMENT 'Регистрационный адрес',
+  address           VARCHAR(350) NOT NULL                COMMENT 'Регистрационный адрес',
   phone             VARCHAR(20)                          COMMENT 'Номер телефона',
   is_active         BOOLEAN      DEFAULT FALSE           COMMENT 'Действующее подразделение, если дейтвует - true',
   organization_id   INTEGER                              COMMENT 'Уникальный идентификатор организации',

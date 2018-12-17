@@ -2,11 +2,16 @@ package ru.bellintegrator.school.personnelregistry.api.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
+
 import javax.validation.constraints.*;
 import java.util.Date;
 
 /**
  * сотрудник
+ *
+ * Обьекты даноно класса служат для передачи данных между слоями контроллер - модель,
+ * и представляет данные для модели сотрудника
  */
 @ApiModel(description = "Сотрудник")
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -50,7 +55,8 @@ public class UserView {
     /**
      * Код типа документа
      */
-    @Size(max = 2, message = "Код документа не должен превышать 2-х символов")
+    @Pattern(regexp = "\\d{1,2}",
+             message = ErrorMessage.IDENTIFICATION_DOCUMENT_CATALOG_PATTERN)
     private String docCode;
 
     /**
@@ -79,8 +85,9 @@ public class UserView {
     /**
      * Код государства. Трехзначный цифровой код
      */
-    @Max(value = 999, message = "Цифровой код страны по ISO 3166-1 превышает значение(должен иметь 3 цифры)")
-    private Integer citizenshipCode;
+    @Pattern(regexp = "\\d{1,3}",
+             message = ErrorMessage.COUNTRY_CATALOG_PATTERN)
+    private String citizenshipCode;
 
     /**
      * Работающий
@@ -178,11 +185,11 @@ public class UserView {
         this.citizenshipName = citizenshipName;
     }
 
-    public Integer getCitizenshipCode() {
+    public String getCitizenshipCode() {
         return citizenshipCode;
     }
 
-    public void setCitizenshipCode(Integer citizenshipCode) {
+    public void setCitizenshipCode(String citizenshipCode) {
         this.citizenshipCode = citizenshipCode;
     }
 

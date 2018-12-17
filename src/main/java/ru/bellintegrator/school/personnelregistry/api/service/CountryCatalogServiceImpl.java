@@ -18,17 +18,17 @@ public class CountryCatalogServiceImpl implements CountryCatalogServiceI {
     public List<CountryCatalogView> getList() {
         CountryCatalogView sampleCountry1 = new CountryCatalogView();
         sampleCountry1.setId(1);
-        sampleCountry1.setCode(643);
+        sampleCountry1.setCode("643");
         sampleCountry1.setName("Российская Федерация");
 
         CountryCatalogView sampleCountry2 = new CountryCatalogView();
         sampleCountry2.setId(2);
-        sampleCountry2.setCode(36);
+        sampleCountry2.setCode("36");
         sampleCountry2.setName("Австралия");
 
         CountryCatalogView sampleCountry3 = new CountryCatalogView();
         sampleCountry3.setId(3);
-        sampleCountry3.setCode(40);
+        sampleCountry3.setCode("40");
         sampleCountry3.setName("Австрия");
 
         List<CountryCatalogView> listCountries = new LinkedList<>();

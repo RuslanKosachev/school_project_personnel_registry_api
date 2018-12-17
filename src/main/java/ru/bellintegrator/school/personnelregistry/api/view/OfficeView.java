@@ -24,7 +24,7 @@ public class OfficeView {
     /**
      * Адрес
      */
-    @Size(max = 255, message = "Адрес не должен превышать 255 символов")
+    @Size(max = 350, message = "Адрес не должен превышать 350 символов")
     private String address;
 
     /**

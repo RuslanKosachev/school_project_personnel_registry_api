@@ -1,48 +1,59 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
+
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
  * Организация
+ *
+ * Обьекты даноно класса служат для передачи данных между слоями контроллер - модель,
+ * и представляет данные для модели организации
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrganizationView {
     /**
      * Идентификатор
      */
-    @Min(value = 1, message = "id не должен быть меньше единицы")
+    @Min(value = 1,
+         message = ErrorMessage.ORGANIZATION_ID_MIN)
     private Integer id;
 
     /**
      * Короткое наименование
      */
-    @Size(max = 100, message = "Наименование организации не должно превышать 100 символов")
+    @Size(max = 100,
+          message = "Наименование организации не должно превышать 100 символов")
     private String name;
 
     /**
      * Полное наименование
      */
-    @Size(max = 350, message = "Полное наименование организации не должно превышать 350 символов")
+    @Size(max = 350,
+          message = "Полное наименование организации не должно превышать 350 символов")
     private String fullName;
 
     /**
      * Идентификационный номер налогоплательщика
      */
-    @Size(max = 10, min = 10, message = "Длина ИНН должна быть 10 символов")
+    @Pattern(regexp = "\\d{10,12}",
+             message = ErrorMessage.ORGANIZATION_INN_PATTERN)
     private String inn;
 
     /**
      *  Код причины постановки на учет в налоговых органах
      */
-    @Size(max = 9, min = 9, message = "Длина КПП должна быть 9 символов")
+    @Pattern(regexp = "\\d{9}",
+            message = ErrorMessage.ORGANIZATION_KPP_PATTERN)
     private String kpp;
 
     /**
      * Адрес
      */
-    @Size(max = 255, message = "Адрес не должен превышать 255 символов")
+    @Size(max = 255, message = "Адрес не должен превышать 350 символов")
     private String address;
 
     /**

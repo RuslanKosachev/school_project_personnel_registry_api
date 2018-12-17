@@ -1,8 +1,11 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -20,14 +23,15 @@ public class IdentificationDocumentCatalogView {
      * Название документа
      */
     @NotEmpty(message = "Название документа не может быть пустым")
-    @Size(max = 250, message = "Наименование организации не должно превышать 250 символов")
+    @Size(max = 250, message = "Наименование документа не должно превышать 250 символов")
     private String name;
 
     /**
      * Уникальный код документа по российской квалификации
      */
-    @NotEmpty(message = "Название документа не может быть пустым")
-    @Size(max = 2, message = "Код документа не должен превышать 2-х символов")
+    @NotEmpty(message = "Код документа не может быть пустым")
+    @Pattern(regexp = "\\d{1,2}",
+             message = ErrorMessage.IDENTIFICATION_DOCUMENT_CATALOG_PATTERN)
     private String code;
 
     public Integer getId() {

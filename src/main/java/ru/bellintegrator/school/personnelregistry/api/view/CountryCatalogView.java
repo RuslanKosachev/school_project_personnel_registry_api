@@ -1,10 +1,9 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
+
+import javax.validation.constraints.*;
 import java.util.Objects;
 
 /**
@@ -28,9 +27,10 @@ public class CountryCatalogView {
     /**
      * Цифровой код страны по ISO 3166-1
      */
-    @Max(value = 999, message = "Цифровой код страны по ISO 3166-1 превышает значение(должен иметь 3 цифры)")
+    @Pattern(regexp = "\\d{1,3}",
+             message = ErrorMessage.COUNTRY_CATALOG_PATTERN)
     @NotEmpty(message = "Цифровой код страны по ISO 3166-1 не может быть пустым")
-    private Integer code;
+    private String code;
 
     public Integer getId() {
         return id;
@@ -48,11 +48,11 @@ public class CountryCatalogView {
         this.name = name;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

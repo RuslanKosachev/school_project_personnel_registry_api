@@ -1,29 +1,27 @@
 package ru.bellintegrator.school.personnelregistry.api.view.exception;
 
-import ru.bellintegrator.school.personnelregistry.api.view.UserView;
-
 /**
- * Сообщения ошибок при отсуцтвии обязательных полей
+ * Типы ошибок при валиидациях полей
  */
 public enum ErrorCode {
 
     // UserView
-    USER_NULL_ID("отсуцтвует идентификатор сотрудника"),
-    USER_NULL_FIRST_NAME("отсуцтвует имя сотрудника"),
-    USER_NULL_POSITION("отсуцтвует должность сотрудника"),
+    USER_NULL_ID(ErrorMessage.USER_ID_NULL),
+    USER_NULL_FIRST_NAME(ErrorMessage.USER_FIRST_NAME_NULL),
+    USER_NULL_POSITION(ErrorMessage.USER_POSITION_NULL),
 
     // OfficeView
-    OFFICE_NULL_ID("отсуцтвует идентификатор офиса"),
-    OFFICE_NULL_NAME("отсуцтвует названия офиса"),
-    OFFICE_NULL_ADDRESS("отсуцтвует адрес офиса"),
+    OFFICE_NULL_ID(ErrorMessage.OFFICE_ID_NULL),
+    OFFICE_NULL_NAME(ErrorMessage.OFFICE_NAME_NULL),
+    OFFICE_NULL_ADDRESS(ErrorMessage.OFFICE_ADDRESS_NULL),
 
     // organizationView
-    ORGANIZATION_NULL_ID("отсуцтвует идентификатор организации"),
-    ORGANIZATION_NULL_NAME("отсуцтвует название организации"),
-    ORGANIZATION_NULL_FULL_NAME("отсуцтвует полное название организации"),
-    ORGANIZATION_NULL_ADDRESS("отсуцтвует адрес организации"),
-    ORGANIZATION_NULL_INN("отсуцтвует идентификационный номер налогоплательщика организации"),
-    ORGANIZATION_NULL_KPP("отсуцтвует код причины постановки на учет в налоговых органах");
+    ORGANIZATION_NULL_ID(ErrorMessage.ORGANIZATION_ID_NULL),
+    ORGANIZATION_NULL_NAME(ErrorMessage.ORGANIZATION_NAME_NULL),
+    ORGANIZATION_NULL_FULL_NAME(ErrorMessage.ORGANIZATION_FULL_NAME_NULL),
+    ORGANIZATION_NULL_ADDRESS(ErrorMessage.ORGANIZATION_ADDRESS_NULL),
+    ORGANIZATION_NULL_INN(ErrorMessage.ORGANIZATION_INN_NULL),
+    ORGANIZATION_NULL_KPP(ErrorMessage.ORGANIZATION_KPP_NULL);
 
     private String errorMessage;
 
