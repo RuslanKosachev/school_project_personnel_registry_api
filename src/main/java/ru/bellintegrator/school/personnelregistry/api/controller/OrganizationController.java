@@ -74,7 +74,7 @@ public class OrganizationController {
             throw new ViewException(ErrorCode.ORGANIZATION_NULL_KPP);
         }
         if (Objects.isNull(view.getAddress())) {
-            throw new ViewException(ErrorCode.OFFICE_NULL_ADDRESS);
+            throw new ViewException(ErrorCode.ORGANIZATION_NULL_ADDRESS);
         }
 
         return organizationService.create(view);
@@ -101,10 +101,11 @@ public class OrganizationController {
             throw new ViewException(ErrorCode.ORGANIZATION_NULL_INN);
         }
         if (Objects.isNull(view.getKpp())) {
+
             throw new ViewException(ErrorCode.ORGANIZATION_NULL_KPP);
         }
         if (Objects.isNull(view.getAddress())) {
-            throw new ViewException(ErrorCode.OFFICE_NULL_ADDRESS);
+            throw new ViewException(ErrorCode.ORGANIZATION_NULL_ADDRESS);
         }
 
         return organizationService.update(view);
