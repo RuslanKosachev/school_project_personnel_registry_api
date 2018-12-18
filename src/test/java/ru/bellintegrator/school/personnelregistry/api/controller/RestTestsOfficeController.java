@@ -27,14 +27,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class RestTestsOfficeController {
 
     private static final String HOST = "http://localhost";
-    private static final String API_PATH = "/api/office/";
+    private static final String API_PATH = "/api/Office/";
     private static final RestTemplate rest = new RestTemplate();
 
     @LocalServerPort
     private int port;
 
     /**
-     * тестирует метод getList(), строка http запроса - /api/office/list
+     * тестирует метод getList(), строка http запроса - /api/Office/list
      * @exception URISyntaxException при синтаксической ошибки адреса uri
      * @see Data
      * @see OfficeView
@@ -69,7 +69,7 @@ public class RestTestsOfficeController {
     }
 
     /**
-     * тестирует метод create(), строка http запроса - /api/office/save
+     * тестирует метод create(), строка http запроса - /api/Office/save
      * @exception URISyntaxException при синтаксической ошибки адреса uri
      * @see OfficeView
      */
@@ -96,7 +96,7 @@ public class RestTestsOfficeController {
     }
 
     /**
-     * тестирует метод update(), строка http запроса - /api/office/update
+     * тестирует метод update(), строка http запроса - /api/Office/update
      * @exception URISyntaxException при синтаксической ошибки адреса uri
      * @see OfficeView
      * */

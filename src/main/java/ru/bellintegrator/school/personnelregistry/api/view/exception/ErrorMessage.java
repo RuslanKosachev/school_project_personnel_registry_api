@@ -27,7 +27,7 @@ public interface ErrorMessage {
     public static final String ORGANIZATION_INN_PATTERN = "идентификационный номер налогоплательщика организации не соответсвует формату";
     public static final String ORGANIZATION_KPP_PATTERN = "код причины постановки на учет в налоговых органах не соответсвует формату";
 
-    // Country catalog
+    // CountryCatalog catalog
     public static final String COUNTRY_CATALOG_PATTERN = "Цифровой код страны по ISO 3166-1 не соответсвует формату";
 
     // Identification document catalog

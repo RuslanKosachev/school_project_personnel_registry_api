@@ -5,14 +5,14 @@ DROP TABLE IF EXISTS office;
 DROP TABLE IF EXISTS organization;
 DROP TABLE IF EXISTS country_catalog;
 DROP TABLE IF EXISTS identification_document_catalog;
-
 -- -----------------------------------------------------------------------------------------------------
 -- справочник стран 
 CREATE TABLE IF NOT EXISTS country_catalog
 (
-  id   SMALLINT     NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
-  code VARCHAR(3)   NOT NULL                COMMENT 'Цифровой код страны по ISO 3166-1',
-  name VARCHAR(150) NOT NULL                COMMENT 'Название страны',
+  id      SMALLINT     NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
+  code    VARCHAR(3)   NOT NULL                COMMENT 'Цифровой код страны по ISO 3166-1',
+  name    VARCHAR(150) NOT NULL                COMMENT 'Название страны',
+  version INTEGER      NOT NULL                COMMENT 'Служебное поле hibernate',
 
   CONSTRAINT PK_COUNTRIES_CATALG_ID PRIMARY KEY (id)
 );
@@ -20,14 +20,14 @@ COMMENT ON TABLE  country_catalog IS 'Справочник стран';
 
 CREATE UNIQUE INDEX UX_COUNTRIES_CATALOG_CODE ON country_catalog(code);
 CREATE UNIQUE INDEX UX_COUNTRIES_CATALOG_NAME ON country_catalog(name);
-
 -- ------------------------------------------------------------------------------------------------------
 -- справочник видов документов, удостоверяющих личность физического лица
 CREATE TABLE IF NOT EXISTS identification_document_catalog
 (
-  id   SMALLINT     NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
-  code VARCHAR(3)   NOT NULL                COMMENT 'Код документа',
-  name VARCHAR(250) NOT NULL                COMMENT 'Наименование документа',
+  id      SMALLINT     NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
+  code    VARCHAR(3)   NOT NULL                COMMENT 'Код документа',
+  name    VARCHAR(250) NOT NULL                COMMENT 'Наименование документа',
+  version INTEGER      NOT NULL                COMMENT 'Служебное поле hibernate',
 
   CONSTRAINT PK_IDENTIFICATION_DOCUMENT_CATALOG_ID PRIMARY KEY (id)
 );
@@ -35,7 +35,6 @@ COMMENT ON TABLE identification_document_catalog IS 'Справочник вид
 
 CREATE UNIQUE INDEX UX_IDENTIFICATION_DOCUMENT_CATALOG_CODE ON identification_document_catalog(code);
 CREATE UNIQUE INDEX UX_IDENTIFICATION_DOCUMENT_CATALOG_NAME ON identification_document_catalog(name);
-
 --  -----------------------------------------------------------------------------------------------------
 -- Организация
 CREATE TABLE IF NOT EXISTS organization
@@ -48,6 +47,7 @@ CREATE TABLE IF NOT EXISTS organization
   address   VARCHAR(350) NOT NULL                COMMENT 'Регистрационный адрес',
   phone     CHAR(20)                             COMMENT 'Номер телефона',
   is_active BOOLEAN      DEFAULT FALSE           COMMENT 'Действующая организация, если дейтвует - true',
+  version   INTEGER      NOT NULL                COMMENT 'Служебное поле hibernate',
 
   CONSTRAINT PK_ORGANIZATION_ID PRIMARY KEY (ID)
 );
@@ -58,7 +58,6 @@ CREATE INDEX IX_ORGANIZATION_NAME ON organization(name);
 CREATE UNIQUE INDEX UX_ORGANIZATION_FULL_NAME ON organization(full_name);
 CREATE UNIQUE INDEX UX_ORGANIZATION_INN       ON organization(inn);
 CREATE UNIQUE INDEX UX_ORGANIZATION_KPP       ON organization(kpp);
-
 -- -------------------------------------------------------------------------------------------
 -- подразделение организации
 CREATE TABLE IF NOT EXISTS office
@@ -69,6 +68,7 @@ CREATE TABLE IF NOT EXISTS office
   phone             VARCHAR(20)                          COMMENT 'Номер телефона',
   is_active         BOOLEAN      DEFAULT FALSE           COMMENT 'Действующее подразделение, если дейтвует - true',
   organization_id   INTEGER                              COMMENT 'Уникальный идентификатор организации',
+  version           INTEGER      NOT NULL                COMMENT 'Служебное поле hibernate',
 
   CONSTRAINT PK_OFFICE_ID PRIMARY KEY (id)
 );
@@ -88,14 +88,15 @@ ALTER TABLE office
 -- сотрудник
 CREATE TABLE IF NOT EXISTS employee
 (
-  id                   INTEGER      NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
-  first_name           VARCHAR(50)  NOT NULL                COMMENT 'Имя',
-  second_name          VARCHAR(50)                          COMMENT 'Фамилия',
-  middle_name          VARCHAR(50)                          COMMENT 'Отчество',
-  position             VARCHAR(100) NOT NULL                COMMENT 'Должность',
-  phone                CHAR(20)                             COMMENT 'Телефон',
-  is_identified        BOOLEAN      DEFAULT FALSE           COMMENT 'Работающий или не работающий, если работающий - true',
-  country_catalog_id   SMALLINT                             COMMENT 'Уникальный идентификатор страны',
+  id                 INTEGER      NOT NULL AUTO_INCREMENT COMMENT 'Уникальный идентификатор',
+  first_name         VARCHAR(50)  NOT NULL                COMMENT 'Имя',
+  second_name        VARCHAR(50)                          COMMENT 'Фамилия',
+  middle_name        VARCHAR(50)                          COMMENT 'Отчество',
+  position           VARCHAR(100) NOT NULL                COMMENT 'Должность',
+  phone              CHAR(20)                             COMMENT 'Телефон',
+  is_identified      BOOLEAN      DEFAULT FALSE           COMMENT 'Работающий или не работающий, если работающий - true',
+  country_catalog_id SMALLINT                             COMMENT 'Уникальный идентификатор страны',
+  version            INTEGER      NOT NULL                COMMENT 'Служебное поле hibernate',
 
   CONSTRAINT PK_EMPLOYEE_ID PRIMARY KEY (id)
 );
@@ -112,7 +113,6 @@ ALTER TABLE employee
       REFERENCES country_catalog(id)
       ON DELETE SET NULL
       ON UPDATE CASCADE;
-			
 -- --------------------------------------------------------------------------------------------------
 -- документ удостоверяющих личность работника
 CREATE TABLE IF NOT EXISTS employee_document
@@ -123,6 +123,7 @@ CREATE TABLE IF NOT EXISTS employee_document
   date                               DATE                                  COMMENT 'Дата выдачи документа',
   identification_document_catalog_id SMALLINT                              COMMENT 'Уникальный идентификатор типа документа удостоверяющих личность физического лица',
   employee_id                        INTEGER                               COMMENT 'Уникальный идентификатор сотрудниа',
+  version                            INTEGER       NOT NULL                COMMENT 'Служебное поле hibernate',
 
   CONSTRAINT PK_EMPLOYEE_DOCUMENT_ID PRIMARY KEY (id)
 );
@@ -144,7 +145,6 @@ ALTER TABLE employee_document
       REFERENCES employee(id)
       ON DELETE CASCADE
       ON UPDATE CASCADE;
-
 -- --------------------------------------------------------------------------------------------------
 -- join-таблица для связи сотрудник - подразделение
 CREATE TABLE IF NOT EXISTS employee_office
