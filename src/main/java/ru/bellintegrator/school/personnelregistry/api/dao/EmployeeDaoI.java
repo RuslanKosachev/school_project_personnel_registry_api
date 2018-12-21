@@ -1,7 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
 import ru.bellintegrator.school.personnelregistry.api.model.Employee;
-import ru.bellintegrator.school.personnelregistry.api.view.UserView;
 
 import java.util.List;
 import java.util.Map;
@@ -9,7 +8,7 @@ import java.util.Map;
 /**
  * DAO для работы с сущностями Сотрудника
  */
-public interface EmployeeDao {
+public interface EmployeeDaoI {
     /**
      * Возвращает список сущностей Employee по параметрам
      *
@@ -23,7 +22,8 @@ public interface EmployeeDao {
      * Получить Сущность по идентификатору
      *
      * @param id уникальный идентификатор сущности
-     * @return объект сущность {@link Employee}
+     * @return при успешном запросе - объект сущность {@link Employee},
+     *         иначе null
      */
     Employee getById(Integer id);
 
@@ -31,15 +31,15 @@ public interface EmployeeDao {
      * Сохранить сущность
      *
      * @param employee - {@link Employee}
-     * @return при успешном добавлении значение - true
+     * @return при успешном сохранении возвращает экземпляр обновленного объекта
      */
-    Boolean save(Employee employee);
+    Employee create(Employee employee);
 
     /**
      * Обновиляет данные сущности
      *
      * @param employee - {@link Employee}
-     * @return при успешном обновлении возвращает экземпляр обновленного объекта, иначе - null
+     * @return при успешном обновлении возвращает экземпляр обновленного объекта
      */
     Employee update(Employee employee);
 }

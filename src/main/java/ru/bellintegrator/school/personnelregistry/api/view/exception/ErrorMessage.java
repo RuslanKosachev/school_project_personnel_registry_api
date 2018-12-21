@@ -36,6 +36,6 @@ public interface ErrorMessage {
     public static final String IDENTIFICATION_DOCUMENT_CATALOG_PATTERN = "Код типа документа не соответсвует формату";
 
     //general
-    public static final String OBJECT_NULL = "Отсутствует объект";
+    public static final String ARG_NULL = "ожидаеый аргумет равен NULL";
 
 }

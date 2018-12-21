@@ -1,13 +1,16 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
-import ru.bellintegrator.school.personnelregistry.api.dao.EmployeeDao;
+import ru.bellintegrator.school.personnelregistry.api.dao.EmployeeDaoI;
 import ru.bellintegrator.school.personnelregistry.api.model.Employee;
+import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityManager;
 import java.util.*;
 
 /**
@@ -16,11 +19,15 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserServiceI {
 
-    private final EmployeeDao employeeDao;
+    // todo del del del del
+    @Autowired
+    private  EntityManager em;
+
+    private final EmployeeDaoI employeeDao;
     private final MapperFacade mapperFacade;
 
     @Autowired
-    public UserServiceImpl(EmployeeDao employeeDao, MapperFacade mapperFacade) {
+    public UserServiceImpl(EmployeeDaoI employeeDao, MapperFacade mapperFacade) {
         this.employeeDao = employeeDao;
         this.mapperFacade = mapperFacade;
     }
@@ -59,6 +66,14 @@ public class UserServiceImpl implements UserServiceI {
     @Override
     @Transactional
     public Boolean create(UserView userView) {
+        Employee employeeNew = mapperFacade.map(userView, Employee.class);
+
+        Employee employeePersist = employeeDao.create(employeeNew);
+
+        // todo выполнять office в officeDao
+        Office office = em.find(Office.class, userView.getOfficeId());
+        office.addEmployee(employeePersist);
+
         return true;
     }
 
