@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS identification_document_catalog
 
   CONSTRAINT PK_IDENTIFICATION_DOCUMENT_CATALOG_ID PRIMARY KEY (id)
 );
-COMMENT ON TABLE identification_document_catalog IS 'Справочник видов документов, удостоверяющих личность физического лица';
+COMMENT ON TABLE identification_document_catalog IS 'Справочник видов документов, удостоверяющих личность физического лица согласно приложению №3 приказа ФНС России от 25.01.2012 N ММВ-7-6/25@ (ред. от 25.05.2016)';
 
 CREATE UNIQUE INDEX UX_IDENTIFICATION_DOCUMENT_CATALOG_CODE ON identification_document_catalog(code);
 CREATE UNIQUE INDEX UX_IDENTIFICATION_DOCUMENT_CATALOG_NAME ON identification_document_catalog(name);

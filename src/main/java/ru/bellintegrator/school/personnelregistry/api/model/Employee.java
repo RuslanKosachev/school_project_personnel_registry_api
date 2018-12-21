@@ -20,7 +20,7 @@ import java.util.Set;
 /** Сущность сотрудника */
 @Entity
 @Table(name = "employee")
-public class User {
+public class Employee {
 
     /** Уникальный дентификатор*/
     @Id
@@ -52,16 +52,19 @@ public class User {
     private String phone;
 
     /** Работающий сотрудник или нет */
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "is_identified")
+    private Boolean isIdentified;
 
     /** Подразделения в которой работает сотрудник */
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany(mappedBy = "employees",
+            //todo test test test test testtest test test test test
+            fetch=FetchType.EAGER)
     private Set<Office> offices;
 
     /** Документ удостоверяющий личность сотруднка */
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id")
+    @OneToOne(
+        cascade = CascadeType.ALL,
+        mappedBy = "employee")
     private EmployeeDocument employeeDocument;
 
     /** Страна */
@@ -70,7 +73,7 @@ public class User {
     private CountryCatalog country;
 
     /** Конструктор для hibernate */
-    public User() { }
+    public Employee() { }
 
     public Integer getId() {
         return id;
@@ -120,12 +123,12 @@ public class User {
         this.phone = phone;
     }
 
-    public Boolean getActive() {
-        return isActive;
+    public Boolean getIsIdentified() {
+        return isIdentified;
     }
 
-    public void setActive(Boolean active) {
-        isActive = active;
+    public void setIsIdentified(Boolean identified) {
+        isIdentified = identified;
     }
 
     public Set<Office> getOffices() {
@@ -147,11 +150,27 @@ public class User {
         this.employeeDocument = employeeDocument;
     }
 
+
     public CountryCatalog getCountry() {
         return country;
     }
 
     public void setCountry(CountryCatalog country) {
         this.country = country;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", version=" + version +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", middleName='" + middleName + '\'' +
+                ", position='" + position + '\'' +
+                ", phone='" + phone + '\'' +
+                ", isIdentified=" + isIdentified +
+                '}';
     }
 }

@@ -7,6 +7,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+
+@NamedQueries({
+        @NamedQuery(
+                name = "getCountryCatalogByCode",
+                query = "SELECT cc FROM CountryCatalog as cc WHERE cc.code = :code"
+        )
+})
 
 /** Сущность страны */
 @Entity

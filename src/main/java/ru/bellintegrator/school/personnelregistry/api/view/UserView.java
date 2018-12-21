@@ -53,7 +53,8 @@ public class UserView {
     private String phone;
 
     /**
-     * Код типа документа
+     * Код типа документа согласно приложению №3
+     * приказа ФНС России от 25.01.2012 N ММВ-7-6/25@ (ред. от 25.05.2016)
      */
     @Pattern(regexp = "\\d{1,2}",
              message = ErrorMessage.IDENTIFICATION_DOCUMENT_CATALOG_PATTERN)
@@ -64,6 +65,13 @@ public class UserView {
      */
     @Size(max = 250, message = "Наименование документа не может превышать 250 символов")
     private String docName;
+
+    /**
+     * Наименование документа согласно приложению №3
+     * приказа ФНС России от 25.01.2012 N ММВ-7-6/25@ (ред. от 25.05.2016)
+     */
+    @Size(max = 250, message = "Наименование документа не может превышать 250 символов")
+    private String docNameCatalog;
 
     /**
      * Номер документа
@@ -193,7 +201,7 @@ public class UserView {
         this.citizenshipCode = citizenshipCode;
     }
 
-    public Boolean isIdentified() {
+    public Boolean getIdentified() {
         return isIdentified;
     }
 
@@ -207,5 +215,13 @@ public class UserView {
 
     public void setOfficeId(Integer officeId) {
         this.officeId = officeId;
+    }
+
+    public String getDocNameCatalog() {
+        return docNameCatalog;
+    }
+
+    public void setDocNameCatalog(String docNameCatalog) {
+        this.docNameCatalog = docNameCatalog;
     }
 }

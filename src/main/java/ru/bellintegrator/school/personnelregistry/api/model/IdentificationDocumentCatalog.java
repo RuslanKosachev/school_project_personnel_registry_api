@@ -8,7 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/** Сущность типа документа удостоверяющего личность */
+/**
+ * Сущность типа документа удостоверяющего личность
+ *
+ * Согласно Приложению №3 приказа ФНС России
+ * от 25.01.2012 N ММВ-7-6/25@ (ред. от 25.05.2016)
+ *
+ * */
 @Entity
 @Table(name = "identification_document_catalog")
 public class IdentificationDocumentCatalog {

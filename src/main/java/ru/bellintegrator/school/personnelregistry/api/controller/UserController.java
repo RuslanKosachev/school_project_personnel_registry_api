@@ -32,6 +32,7 @@ public class UserController {
      *
      * @param view
      * @return
+     * @see UserView
      */
     @PostMapping("/list")
     public List<UserView> getList(@Valid @RequestBody UserView view) throws Exception {

@@ -1,9 +1,14 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.EmployeeDao;
+import ru.bellintegrator.school.personnelregistry.api.model.Employee;
+import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import java.util.List;
+import java.util.*;
 
 /**
  * {@inheritDoc}
@@ -11,30 +16,48 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserServiceI {
 
-    /**
-     * {@inheritDoc}
-     */
-    public List<UserView> getList(UserView userViewParam) {
-        return null;
+    private final EmployeeDao employeeDao;
+    private final MapperFacade mapperFacade;
+
+    @Autowired
+    public UserServiceImpl(EmployeeDao employeeDao, MapperFacade mapperFacade) {
+        this.employeeDao = employeeDao;
+        this.mapperFacade = mapperFacade;
     }
 
     /**
      * {@inheritDoc}
      */
+    public List<UserView> getList(UserView filter) {
+        //заполним фильтр
+        Map<String, Object> map = new HashMap<>();
+        map.put("officeId", filter.getOfficeId());
+        map.put("firstName", filter.getFirstName());
+        map.put("secondName", filter.getSecondName());
+        map.put("middleName", filter.getMiddleName());
+        map.put("position(", filter.getPosition());
+        map.put("docCode", filter.getDocCode());
+        map.put("citizenshipCode", filter.getCitizenshipCode());
+
+        List<Employee> employees = employeeDao.getList(map);
+        return mapperFacade.mapAsList(employees, UserView.class);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
     public UserView getById(Integer id) {
-        UserView sample = new UserView();
-        sample.setId(id);
-        sample.setFirstName("Виктор");
-        sample.setMiddleName("Прокопенко");
-        sample.setPosition("Ассистент");
-        sample.setOfficeId(2);
-
-        return sample;
+        Employee employee = employeeDao.getById(id);
+        return  mapperFacade.map(employee, UserView.class);
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
+    @Transactional
     public Boolean create(UserView userView) {
         return true;
     }
@@ -42,7 +65,15 @@ public class UserServiceImpl implements UserServiceI {
     /**
      * {@inheritDoc}
      */
+    @Transactional
     public Boolean update(UserView userView) {
+        Employee employee = mapperFacade.map(userView, Employee.class);
+
+        Employee updatedEmployee = employeeDao.update(employee);
+
+        if (Objects.nonNull(updatedEmployee)) {
+            return true;
+        }
         return false;
     }
 }

@@ -89,7 +89,7 @@ INSERT INTO employee(id, first_name, second_name, position, is_identified, count
 SET @identificationDocumentCatalogId = SELECT id FROM identification_document_catalog WHERE code = 21;
 INSERT INTO employee_document(id, name, number, date, identification_document_catalog_id, employee_id, version)
   VALUES
-  (1, 'паспорт','78946', '1985-12-04', @identificationDocumentCatalogId, 1, 0);
+  (1, 'пачпорт','78946', '1985-12-04', @identificationDocumentCatalogId, 1, 0);
 
 -- связь employee - Office
 INSERT INTO employee_office(employee_id, office_id)

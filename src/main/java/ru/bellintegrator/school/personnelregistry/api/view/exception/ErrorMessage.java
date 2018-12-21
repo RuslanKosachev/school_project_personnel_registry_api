@@ -5,10 +5,12 @@ package ru.bellintegrator.school.personnelregistry.api.view.exception;
  * */
 public interface ErrorMessage {
 
-    // User
+    // Employee
     public static final String USER_ID_NULL = "отсуцтвует идентификатор сотрудника";
     public static final String USER_FIRST_NAME_NULL = "отсуцтвует имя сотрудника";
     public static final String USER_POSITION_NULL = "отсуцтвует должность сотрудника";
+
+    public static final String USER_ID_ILLEGAL = "недопустимое значение идентификатора сотрудника";
 
     // Office
     public static final String OFFICE_ID_NULL = "отсуцтвует идентификатор офиса";
@@ -32,4 +34,8 @@ public interface ErrorMessage {
 
     // Identification document catalog
     public static final String IDENTIFICATION_DOCUMENT_CATALOG_PATTERN = "Код типа документа не соответсвует формату";
+
+    //general
+    public static final String OBJECT_NULL = "Отсутствует объект";
+
 }

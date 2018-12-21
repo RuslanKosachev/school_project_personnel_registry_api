@@ -58,7 +58,19 @@ public class EmployeeDocument {
     /** Тип докумета */
     @ManyToOne
     @JoinColumn(name = "identification_document_catalog_id")
-    private CountryCatalog documentCatalog;
+    private IdentificationDocumentCatalog documentCatalog;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     /** Конструктор для hibernate */
     public EmployeeDocument() { }
@@ -95,11 +107,11 @@ public class EmployeeDocument {
         this.date = date;
     }
 
-    public CountryCatalog getDocumentCatalog() {
+    public IdentificationDocumentCatalog getDocumentCatalog() {
         return documentCatalog;
     }
 
-    public void setDocumentCatalog(CountryCatalog documentCatalog) {
+    public void setDocumentCatalog(IdentificationDocumentCatalog documentCatalog) {
         this.documentCatalog = documentCatalog;
     }
 }

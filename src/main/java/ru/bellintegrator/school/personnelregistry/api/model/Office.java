@@ -8,13 +8,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinTable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /** Сущность подразделения */
@@ -61,23 +61,23 @@ public class Office {
             CascadeType.MERGE})
     @JoinTable(
         name = "employee_office",
-        joinColumns = @JoinColumn(name = "employee_id"),
-        inverseJoinColumns = @JoinColumn(name = "office_id"))
-    private Set<User> users;
+        joinColumns = @JoinColumn(name = "office_id"),
+        inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private Set<Employee> employees;
 
     /** Конструктор для hibernate */
     public Office() { }
 
     /** Добовляет сотрудника */
-    public void addUser(User user) {
-        users.add(user);
-        user.getOffices().add(this);
+    public void addEmployee(Employee employee) {
+        employees.add(employee);
+        employee.getOffices().add(this);
     }
 
     /** Удаляет сотрудника */
-    public void removeUser(User user) {
-        users.remove(user);
-        user.getOffices().remove(this);
+    public void removeEmployee(Employee employee) {
+        employees.remove(employee);
+        employee.getOffices().remove(this);
     }
 
     public Integer getId() {
@@ -128,16 +128,32 @@ public class Office {
         this.organization = organization;
     }
 
-    public Set<User> getUsers() {
-        if (users == null) {
-            users = new HashSet<>();
+    public Set<Employee> getEmployees() {
+        if (employees == null) {
+            employees = new HashSet<>();
         }
-        return users;
+        return employees;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setEmployees(Set<Employee> users) {
+        this.employees = users;
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Office)) return false;
+        Office office = (Office) o;
+        return Objects.equals(getId(), office.getId()) &&
+                Objects.equals(getName(), office.getName()) &&
+                Objects.equals(getAddress(), office.getAddress()) &&
+                Objects.equals(isActive, office.isActive) &&
+                Objects.equals(getOrganization(), office.getOrganization());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getAddress(), isActive);
+    }
 }

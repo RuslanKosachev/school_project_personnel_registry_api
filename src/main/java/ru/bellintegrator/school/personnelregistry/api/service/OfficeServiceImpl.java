@@ -1,8 +1,12 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.view.OfficeView;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -10,6 +14,13 @@ import java.util.List;
  */
 @Service
 public class OfficeServiceImpl implements OfficeServiceI {
+
+    private final EntityManager em;
+
+    @Autowired
+    public OfficeServiceImpl(EntityManager em) {
+        this.em = em;
+    }
 
     /**
      * {@inheritDoc}
@@ -34,6 +45,8 @@ public class OfficeServiceImpl implements OfficeServiceI {
     /**
      * {@inheritDoc}
      */
+    @Override
+    @Transactional
     public Boolean create(OfficeView param) {
         return true;
     }

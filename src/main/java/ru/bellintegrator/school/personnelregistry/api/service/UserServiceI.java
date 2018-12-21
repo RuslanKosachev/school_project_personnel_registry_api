@@ -1,5 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
+import ru.bellintegrator.school.personnelregistry.api.model.Employee;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
 
 import java.util.List;
@@ -8,32 +9,36 @@ import java.util.List;
  * Сервис управления информацией об сотрудниках
  */
 public interface UserServiceI {
-
     /**
      * Возвращает список сотрудников по параметрам
      *
-     * @return {@UserView}
+     * @param filter - полям {@link UserView} являются фильтрами
+     * @return коллекция {@link UserView}
      */
     List<UserView> getList(UserView filter);
 
     /**
      * Возвращает сотрудника по id
      *
-     * @return {@UserView}
+     * @param id уникальный идентификатор сущности {@link Employee}
+     * @return объект {@link UserView}
      */
     UserView getById(Integer id);
 
     /**
      * Сохраняет(создает) нового сотрудника
      *
-     * @return {@Boolean} при успешном добавлении значение - true
+     * @param param - {@link UserView}
+     * @return при успешном добавлении значение - true
+     * @see UserView
      */
     Boolean create(UserView param);
 
     /**
      * Обновиляет данные сотрудника
      *
-     * @return {@Boolean} при успешном обновлении значение - true
+     * @param param - {@link UserView}
+     * @return при успешном обновлении значение - true
      */
     Boolean update(UserView param);
 }
