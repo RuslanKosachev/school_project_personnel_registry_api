@@ -11,11 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.CascadeType;
-import javax.persistence.JoinTable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.time.LocalDate;
 import java.util.Date;
 
 /** Сущность документа удостоверяющего личность - относится к одному сотруднику */
@@ -51,9 +49,8 @@ public class EmployeeDocument {
     /**
      * Дата выдачи документа
      */
-    @Column(name = "date", length = 250)
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    @Column(name = "date")
+    private LocalDate date;
 
     /** Тип докумета */
     @ManyToOne
@@ -99,11 +96,11 @@ public class EmployeeDocument {
         this.number = number;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

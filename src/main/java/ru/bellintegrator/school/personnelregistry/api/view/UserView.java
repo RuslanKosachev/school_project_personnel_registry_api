@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
 
 import javax.validation.constraints.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * сотрудник
@@ -83,7 +83,7 @@ public class UserView {
      * Дата документа
      */
     @PastOrPresent(message = "Дата документа должна быть прошлым или настоящим")
-    private Date docDate;
+    private LocalDate docDate;
 
     /**
      * Наименование государства
@@ -177,11 +177,11 @@ public class UserView {
         this.docNumber = docNumber;
     }
 
-    public Date getDocDate() {
+    public LocalDate getDocDate() {
         return docDate;
     }
 
-    public void setDocDate(Date docDate) {
+    public void setDocDate(LocalDate docDate) {
         this.docDate = docDate;
     }
 
