@@ -1,16 +1,16 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
 import ru.bellintegrator.school.personnelregistry.api.dao.EmployeeDaoI;
+import ru.bellintegrator.school.personnelregistry.api.dao.OfficeDaoI;
 import ru.bellintegrator.school.personnelregistry.api.model.Employee;
 import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
 import java.util.*;
 
 /**
@@ -19,16 +19,14 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserServiceI {
 
-    // todo del del del del
-    @Autowired
-    private  EntityManager em;
-
     private final EmployeeDaoI employeeDao;
+    private final OfficeDaoI officeDao;
     private final MapperFacade mapperFacade;
 
     @Autowired
-    public UserServiceImpl(EmployeeDaoI employeeDao, MapperFacade mapperFacade) {
+    public UserServiceImpl(EmployeeDaoI employeeDao, OfficeDaoI officeDao, MapperFacade mapperFacade) {
         this.employeeDao = employeeDao;
+        this.officeDao = officeDao;
         this.mapperFacade = mapperFacade;
     }
 
@@ -65,16 +63,22 @@ public class UserServiceImpl implements UserServiceI {
      */
     @Override
     @Transactional
-    public Boolean create(UserView userView) {
-        Employee employeeNew = mapperFacade.map(userView, Employee.class);
+    public Boolean create(UserView param) {
+        if (Objects.isNull(param.getOfficeId())) {
+            throw new NullPointerException(ErrorMessage.OFFICE_ID_NULL);
+        }
 
+        Employee employeeNew = mapperFacade.map(param, Employee.class);
         Employee employeePersist = employeeDao.create(employeeNew);
 
-        // todo выполнять office в officeDao
-        Office office = em.find(Office.class, userView.getOfficeId());
-        office.addEmployee(employeePersist);
+        Office office = officeDao.getById(param.getOfficeId());
 
-        return true;
+        if (Objects.nonNull(employeePersist) && Objects.nonNull(office)) {
+            office.addEmployee(employeePersist);
+
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -83,7 +87,6 @@ public class UserServiceImpl implements UserServiceI {
     @Transactional
     public Boolean update(UserView userView) {
         Employee employee = mapperFacade.map(userView, Employee.class);
-
         Employee updatedEmployee = employeeDao.update(employee);
 
         if (Objects.nonNull(updatedEmployee)) {

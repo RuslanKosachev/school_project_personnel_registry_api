@@ -78,7 +78,7 @@ public class OfficeView {
         this.phone = phone;
     }
 
-    public Boolean isActive() {
+    public Boolean getIsActive() {
         return isActive;
     }
 

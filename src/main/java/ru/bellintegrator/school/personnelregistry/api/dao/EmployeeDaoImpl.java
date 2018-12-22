@@ -90,9 +90,17 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
      */
     @Override
     public Employee create(Employee employee) {
+        // обязательные проверки
         if (Objects.isNull(employee)) {
             throw new NullPointerException(ErrorMessage.ARG_NULL);
         }
+        if (Objects.isNull(employee.getFirstName())) {
+            throw new NullPointerException(ErrorMessage.USER_FIRST_NAME_NULL);
+        }
+        if (Objects.isNull(employee.getPosition())) {
+            throw new NullPointerException(ErrorMessage.USER_POSITION_NULL);
+        }
+
         // EmployeeDocument если есть документ то прикрепим его к сотруднику
         EmployeeDocument employeeDocument = employee.getEmployeeDocument();
         if (Objects.nonNull(employeeDocument)) {
@@ -139,6 +147,7 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
      */
     @Override
     public Employee update(Employee employee) {
+        // обязательные проверки
         if (Objects.isNull(employee)) {
             throw new NullPointerException(ErrorMessage.ARG_NULL);
         }
