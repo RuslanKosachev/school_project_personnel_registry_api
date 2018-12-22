@@ -1,13 +1,17 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.bellintegrator.school.personnelregistry.api.model.Office;
+import ru.bellintegrator.school.personnelregistry.api.dao.OrganizationDaoI;
+import ru.bellintegrator.school.personnelregistry.api.model.Organization;
+import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.OrganizationView;
 
-import javax.persistence.EntityManager;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * {@inheritDoc}
@@ -15,33 +19,35 @@ import java.util.List;
 @Service
 public class OrganizationServiceImpl implements OrganizationServiceI {
 
-    private final EntityManager em;
+    private final OrganizationDaoI orgDao;
+    private final MapperFacade mapperFacade;
 
     @Autowired
-    public OrganizationServiceImpl(EntityManager em) {
-        this.em = em;
+    public OrganizationServiceImpl(OrganizationDaoI orgDao, MapperFacade mapperFacade) {
+        this.orgDao = orgDao;
+        this.mapperFacade = mapperFacade;
     }
 
     /**
      * {@inheritDoc}
      */
     public List<OrganizationView> getList(OrganizationView filter) {
-        return null;
+        //заполним фильтр
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", filter.getName());
+        map.put("inn", filter.getInn());
+        map.put("isActive", filter.getIsActive());
+
+        List<Organization> office = orgDao.getList(map);
+        return mapperFacade.mapAsList(office, OrganizationView.class);
     }
 
     /**
      * {@inheritDoc}
      */
     public OrganizationView getById(Integer id) {
-        OrganizationView sample = new OrganizationView();
-        sample.setName("СГТУ имени Гагарина Ю.А.");
-        sample.setFullName("ФГБОУ ВО Саратовский государственный технический университет");
-        sample.setInn("8894103143");
-        sample.setKpp("794561321");
-        sample.setAddress("г.Саратов");
-        sample.setId(id);
-
-        return sample;
+        Organization office = orgDao.getById(id);
+        return  mapperFacade.map(office, OrganizationView.class);
     }
 
     /**
@@ -49,14 +55,25 @@ public class OrganizationServiceImpl implements OrganizationServiceI {
      */
     @Transactional
     public  Boolean create(OrganizationView param) {
-        Boolean result = false;
-        return result;
+        Organization orgNew = mapperFacade.map(param, Organization.class);
+        Organization orgPersist = orgDao.create(orgNew);
+
+        if (Objects.nonNull(orgPersist)) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * {@inheritDoc}
      */
     public Boolean update(OrganizationView param) {
+        Organization org = mapperFacade.map(param, Organization.class);
+        Organization orgUpdated = orgDao.update(org);
+
+        if (Objects.nonNull(orgUpdated)) {
+            return true;
+        }
         return false;
     }
 }

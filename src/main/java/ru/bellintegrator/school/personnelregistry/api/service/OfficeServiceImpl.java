@@ -1,18 +1,15 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.bellintegrator.school.personnelregistry.api.dao.EmployeeDaoI;
 import ru.bellintegrator.school.personnelregistry.api.dao.OfficeDaoI;
-import ru.bellintegrator.school.personnelregistry.api.model.Employee;
 import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.Organization;
 import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.OfficeView;
-import ru.bellintegrator.school.personnelregistry.api.view.UserView;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
 
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.List;
