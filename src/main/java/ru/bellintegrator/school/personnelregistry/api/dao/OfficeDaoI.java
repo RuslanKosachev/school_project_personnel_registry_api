@@ -1,6 +1,5 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
-import ru.bellintegrator.school.personnelregistry.api.model.Employee;
 import ru.bellintegrator.school.personnelregistry.api.model.Office;
 
 import java.util.List;

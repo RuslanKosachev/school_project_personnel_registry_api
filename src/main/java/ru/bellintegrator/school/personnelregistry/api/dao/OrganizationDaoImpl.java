@@ -1,6 +1,5 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
-import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.Organization;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
 
@@ -140,7 +139,7 @@ public class OrganizationDaoImpl implements OrganizationDaoI {
             }
 
             // фиксируем изменения
-            em.persist(updatedOrg);
+            em.merge(updatedOrg);
         } else {
             throw new NullPointerException("не найден объект запроса Organization");
         }

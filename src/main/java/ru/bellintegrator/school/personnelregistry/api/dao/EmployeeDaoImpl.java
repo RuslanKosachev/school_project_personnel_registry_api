@@ -26,10 +26,15 @@ import java.util.*;
 public class EmployeeDaoImpl implements EmployeeDaoI {
 
     private final EntityManager em;
+    private final CountryCatalogDaoI countryCatalogDao;
+    private final IdentificationDocumentCatalogDaoI identificationDocumentCatalogDao;
+
 
     @Autowired
-    public EmployeeDaoImpl(EntityManager em) {
+    public EmployeeDaoImpl(EntityManager em, CountryCatalogDaoI countryCatalogDao, IdentificationDocumentCatalogDaoI identificationDocumentCatalogDao) {
         this.em = em;
+        this.countryCatalogDao = countryCatalogDao;
+        this.identificationDocumentCatalogDao = identificationDocumentCatalogDao;
     }
 
     /**
@@ -82,7 +87,7 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
      */
     @Override
     public Employee getById(Integer id) {
-        return em.find(Employee.class, null/*id*/);
+        return em.find(Employee.class, id);
     }
 
     /**
@@ -101,39 +106,30 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
             throw new NullPointerException(ErrorMessage.USER_POSITION_NULL);
         }
 
-        // EmployeeDocument если есть документ то прикрепим его к сотруднику
+        // EmployeeDocument если есть документ то свяжем его с сотрудником
         EmployeeDocument employeeDocument = employee.getEmployeeDocument();
         if (Objects.nonNull(employeeDocument)) {
             // если указан тип документа удост. личность
-            if (Objects.nonNull(employeeDocument.getDocumentCatalog())) {
-                try {
-                    TypedQuery<IdentificationDocumentCatalog> query
-                            = em.createNamedQuery("getIdentificationDocumentCatalogByCode",
-                                                  IdentificationDocumentCatalog.class);
-                    query.setParameter("code", employeeDocument.getDocumentCatalog().getCode());
-                    IdentificationDocumentCatalog identificationDocumentCatalogJoin = query.getSingleResult();
-
-                    employeeDocument.setDocumentCatalog(identificationDocumentCatalogJoin);
-
-                } catch (NoResultException e) {
+            IdentificationDocumentCatalog identificationDocumentCatalog = employeeDocument.getDocumentCatalog();
+            if (Objects.nonNull(identificationDocumentCatalog)) {
+                identificationDocumentCatalog
+                        = identificationDocumentCatalogDao.getByCode(identificationDocumentCatalog.getCode());
+                if (Objects.nonNull(identificationDocumentCatalog)) {
+                    employeeDocument.setDocumentCatalog(identificationDocumentCatalog);
+                } else {
                     throw new NullPointerException(" не найден объект запроса IdentificationDocumentCatalog");
                 }
             }
             // todo реализовать добавление документа к сотруднику
             employeeDocument.setEmployee(employee);
         }
-        // если указано гражданство
+        // если указано гражданство через код
         CountryCatalog countryCatalog = employee.getCountry();
         if (Objects.nonNull(countryCatalog)) {
-            try {
-                TypedQuery<CountryCatalog> query = em.createNamedQuery("getCountryCatalogByCode",
-                                                                        CountryCatalog.class);
-                query.setParameter("code", countryCatalog.getCode());
-                countryCatalog = query.getSingleResult();
-
+            countryCatalog = countryCatalogDao.getByCode(countryCatalog.getCode());
+            if (Objects.nonNull(countryCatalog)) {
                 employee.setCountry(countryCatalog);
-
-            } catch (NoResultException e) {
+            } else {
                 throw new NullPointerException("не найден объект запроса CountryCatalog");
             }
         }
@@ -192,19 +188,14 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
                     updatedEmployeeDocument = new EmployeeDocument();
                     em.persist(updatedEmployeeDocument);
                 }
-
                 // если указан тип документа удост. личность
-                if (Objects.nonNull(employeeDocument.getDocumentCatalog())) {
-                    try {
-                        TypedQuery<IdentificationDocumentCatalog> query
-                            = em.createNamedQuery("getIdentificationDocumentCatalogByCode",
-                                                  IdentificationDocumentCatalog.class);
-                        query.setParameter("code", employeeDocument.getDocumentCatalog().getCode());
-                        IdentificationDocumentCatalog identificationDocumentCatalogJoin = query.getSingleResult();
-
-                        updatedEmployeeDocument.setDocumentCatalog(identificationDocumentCatalogJoin);
-
-                    } catch (NoResultException e) {
+                IdentificationDocumentCatalog identificationDocumentCatalog = employeeDocument.getDocumentCatalog();
+                if (Objects.nonNull(identificationDocumentCatalog)) {
+                    identificationDocumentCatalog
+                            = identificationDocumentCatalogDao.getByCode(identificationDocumentCatalog.getCode());
+                    if (Objects.nonNull(identificationDocumentCatalog)) {
+                        updatedEmployeeDocument.setDocumentCatalog(identificationDocumentCatalog);
+                    } else {
                         throw new NullPointerException(" не найден объект запроса IdentificationDocumentCatalog");
                     }
                 }
@@ -223,21 +214,18 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
                 // todo реализовать добавление документа к сотруднику
                 updatedEmployeeDocument.setEmployee(updatedEmployee);
             }
-            // CountryCatalog
+            // CountryCatalog если указано гражданство через код
             CountryCatalog countryCatalog = employee.getCountry();
             if (Objects.nonNull(countryCatalog)) {
-                try {
-                    TypedQuery<CountryCatalog> query = em.createNamedQuery("getCountryCatalogByCode",
-                                                                            CountryCatalog.class);
-                    query.setParameter("code", countryCatalog.getCode());
-                    countryCatalog = query.getSingleResult();
+                countryCatalog = countryCatalogDao.getByCode(countryCatalog.getCode());
+                if (Objects.nonNull(countryCatalog)) {
                     updatedEmployee.setCountry(countryCatalog);
-                } catch (NoResultException e) {
-                    throw new NullPointerException(" не найден объект запроса IdentificationDocumentCatalog");
+                } else {
+                    throw new NullPointerException("не найден объект запроса IdentificationDocumentCatalog");
                 }
             }
             // фиксируем изменения
-            em.persist(updatedEmployee);
+            em.merge(updatedEmployee);
         } else {
             throw new NullPointerException("не найден объект запроса Employee");
         }

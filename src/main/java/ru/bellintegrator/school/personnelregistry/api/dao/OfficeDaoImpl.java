@@ -120,7 +120,7 @@ public class OfficeDaoImpl implements OfficeDaoI {
             }
 
             // фиксируем изменения
-            em.persist(updatedOffice);
+            em.merge(updatedOffice);
         } else {
             throw new NullPointerException("не найден объект запроса Office");
         }

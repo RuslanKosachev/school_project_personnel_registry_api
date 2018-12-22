@@ -1,6 +1,7 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
 import ru.bellintegrator.school.personnelregistry.api.dao.OfficeDaoI;
+import ru.bellintegrator.school.personnelregistry.api.dao.OrganizationDaoI;
 import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.Organization;
 import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
@@ -27,11 +28,13 @@ public class OfficeServiceImpl implements OfficeServiceI {
     private  EntityManager em;
 
     private final OfficeDaoI officeDao;
+    private final OrganizationDaoI orgDao;
     private final MapperFacade mapperFacade;
 
     @Autowired
-    public OfficeServiceImpl(OfficeDaoI officeDao, MapperFacade mapperFacade) {
+    public OfficeServiceImpl(MapperFacade mapperFacade, OfficeDaoI officeDao, OrganizationDaoI orgDao) {
         this.officeDao = officeDao;
+        this.orgDao = orgDao;
         this.mapperFacade = mapperFacade;
     }
 
@@ -71,8 +74,7 @@ public class OfficeServiceImpl implements OfficeServiceI {
         Office officeNew = mapperFacade.map(param, Office.class);
         Office officePersist = officeDao.create(officeNew);
 
-        // todo выполнять office в organizationDao
-        Organization organization = em.find(Organization.class, param.getOrgId());
+        Organization organization = orgDao.getById(param.getOrgId());
 
         if (Objects.nonNull(officePersist) && Objects.nonNull(organization)) {
             officePersist.setOrganization(organization);
