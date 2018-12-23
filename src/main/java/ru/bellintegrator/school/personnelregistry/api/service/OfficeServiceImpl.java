@@ -11,7 +11,6 @@ import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessag
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,10 +21,6 @@ import java.util.Objects;
  */
 @Service
 public class OfficeServiceImpl implements OfficeServiceI {
-
-    // todo del del del del
-    @Autowired
-    private  EntityManager em;
 
     private final OfficeDaoI officeDao;
     private final OrganizationDaoI orgDao;
@@ -41,6 +36,7 @@ public class OfficeServiceImpl implements OfficeServiceI {
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public List<OfficeView> getList(OfficeView filter) {
         //заполним фильтр
         Map<String, Object> map = new HashMap<>();
@@ -71,13 +67,16 @@ public class OfficeServiceImpl implements OfficeServiceI {
             throw new NullPointerException(ErrorMessage.ORGANIZATION_ID_NULL);
         }
 
-        Office officeNew = mapperFacade.map(param, Office.class);
-        Office officePersist = officeDao.create(officeNew);
-
         Organization organization = orgDao.getById(param.getOrgId());
+        if ( Objects.isNull(organization)) {
+            throw new NullPointerException("в БД нет запрашиваемой организации организации");
+        }
 
-        if (Objects.nonNull(officePersist) && Objects.nonNull(organization)) {
-            officePersist.setOrganization(organization);
+        Office officeNew = mapperFacade.map(param, Office.class);
+        officeNew.setOrganization(organization);
+
+        Office officePersist = officeDao.create(officeNew);
+        if ( Objects.nonNull(officePersist)) {
             return true;
         }
         return false;
@@ -86,6 +85,7 @@ public class OfficeServiceImpl implements OfficeServiceI {
     /**
      * {@inheritDoc}
      */
+    @Transactional
     public Boolean update(OfficeView param) {
         Office office = mapperFacade.map(param, Office.class);
         Office officeUpdated = officeDao.update(office);

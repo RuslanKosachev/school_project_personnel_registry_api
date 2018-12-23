@@ -31,6 +31,7 @@ public class OrganizationServiceImpl implements OrganizationServiceI {
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public List<OrganizationView> getList(OrganizationView filter) {
         //заполним фильтр
         Map<String, Object> map = new HashMap<>();
@@ -67,6 +68,7 @@ public class OrganizationServiceImpl implements OrganizationServiceI {
     /**
      * {@inheritDoc}
      */
+    @Transactional
     public Boolean update(OrganizationView param) {
         Organization org = mapperFacade.map(param, Organization.class);
         Organization orgUpdated = orgDao.update(org);

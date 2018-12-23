@@ -61,6 +61,7 @@ public class UserServiceImpl implements UserServiceI {
     /**
      * {@inheritDoc}
      */
+    // todo ПЕРЕРАБОТАТЬ АЛГОРИТМ ПЕРЕРАБОТАТЬ АЛГОРИТМ ПЕРЕРАБОТАТЬ АЛГОРИТМ
     @Override
     @Transactional
     public Boolean create(UserView param) {

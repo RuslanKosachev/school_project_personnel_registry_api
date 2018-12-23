@@ -24,10 +24,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -107,24 +104,28 @@ public class RestTestsUserController {
         ResponseEntity<Data<UserView>> response
                 = rest.exchange(URI_ID, HttpMethod.GET, httpEntity, new ParameterizedTypeReference<Data<UserView>>(){});
 
+        Assert.assertEquals(200, response.getStatusCodeValue());
+
         UserView userView = response.getBody().getData();
 
-        Assert.assertEquals(200, response.getStatusCodeValue());
-        if (Objects.nonNull(userView)) {
-            assertThat(userView.getId(), is(ID));
-            assertThat(userView.getFirstName(), is("Виктор"));
-            assertThat(userView.getSecondName(), is("Прокопенко"));
-            assertThat(userView.getPosition(), is("Ассистент"));
-            assertThat(userView.getDocCode(), is("21"));
-            assertThat(userView.getDocName(), is("паспорт"));
-            assertThat(userView.getDocNameCatalog(), is("Паспорт гражданина Российской Федерации"));
-            assertThat(userView.getDocNumber(), is("78946"));
-            assertEquals(userView.getDocDate(), LocalDate.of(1985,12,4));
-            assertThat(userView.getCitizenshipName(), is("Российская Федерация"));
-            assertThat(userView.getCitizenshipCode(), is("643"));
-        } else {
-            fail();
-        }
+        String queryString = String.format("SELECT off FROM %s off WHERE off.id = :id ", Employee.class.getSimpleName());
+        TypedQuery<Employee> query = em.createQuery(queryString, Employee.class);
+        query.setParameter("id", ID);
+        Employee employee = query.getSingleResult();
+
+        Assert.assertEquals(employee.getId(), userView.getId());
+        Assert.assertEquals(employee.getFirstName(), userView.getFirstName());
+        Assert.assertEquals(employee.getSecondName(), userView.getSecondName());
+        Assert.assertEquals(employee.getMiddleName(), userView.getMiddleName());
+        Assert.assertEquals(employee.getPosition(), userView.getPosition());
+        Assert.assertEquals(employee.getPhone(), userView.getPhone());
+        Assert.assertEquals(employee.getCountry().getCode(), userView.getCitizenshipCode());
+        Assert.assertEquals(employee.getCountry().getName(), userView.getCitizenshipName());
+        Assert.assertEquals(employee.getEmployeeDocument().getDocumentCatalog().getCode(), userView.getDocCode());
+        Assert.assertEquals(employee.getEmployeeDocument().getDocumentCatalog().getName(), userView.getDocNameCatalog());
+        Assert.assertEquals(employee.getEmployeeDocument().getName(), userView.getDocName());
+        Assert.assertEquals(employee.getEmployeeDocument().getNumber(), userView.getDocNumber());
+        Assert.assertEquals(employee.getEmployeeDocument().getDate(), userView.getDocDate());
     }
 
     /**
@@ -204,21 +205,21 @@ public class RestTestsUserController {
     public void updateTest() throws URISyntaxException {
         final URI URI_UPDATE = new URI(HOST + ":" + port + API_PATH + "update");
 
-        UserView exUserView = new UserView();
-        exUserView.setId(2);
-        exUserView.setFirstName("АнтонUp");
-        exUserView.setSecondName("КрукUp");
-        exUserView.setMiddleName("КурковичUp");
-        exUserView.setPosition("ДоцентUp");
-        exUserView.setIsIdentified(false);
-        exUserView.setPhone("89093215687");
-        exUserView.setDocCode("91");
-        exUserView.setDocName("паспортуUp");
-        exUserView.setDocDate(LocalDate.of(1985,7,26));
-        exUserView.setDocNumber("777777");
-        exUserView.setCitizenshipCode("36");
+        UserView upUserView = new UserView();
+        upUserView.setId(2);
+        upUserView.setFirstName("АнтонUp");
+        upUserView.setSecondName("КрукUp");
+        upUserView.setMiddleName("КурковичUp");
+        upUserView.setPosition("ДоцентUp");
+        upUserView.setIsIdentified(false);
+        upUserView.setPhone("89093215687");
+        upUserView.setDocCode("91");
+        upUserView.setDocName("паспортуUp");
+        upUserView.setDocDate(LocalDate.of(1985,7,26));
+        upUserView.setDocNumber("777777");
+        upUserView.setCitizenshipCode("36");
 
-        HttpEntity<UserView> httpEntity = new HttpEntity<>(exUserView, headers);
+        HttpEntity<UserView> httpEntity = new HttpEntity<>(upUserView, headers);
         ResponseEntity<String> response =
                 rest.exchange(URI_UPDATE, HttpMethod.POST, httpEntity, String.class);
 
@@ -248,18 +249,18 @@ public class RestTestsUserController {
             Employee.class.getSimpleName()
         );
         TypedQuery<Employee> query = em.createQuery(queryString, Employee.class);
-        query.setParameter("id", exUserView.getId());
-        query.setParameter("firstName", exUserView.getFirstName());
-        query.setParameter("secondName", exUserView.getSecondName());
-        query.setParameter("middleName", exUserView.getMiddleName());
-        query.setParameter("position", exUserView.getPosition());
-        query.setParameter("isIdentified", exUserView.getIsIdentified());
-        query.setParameter("phone", exUserView.getPhone());
-        query.setParameter("employeeDocumentName", exUserView.getDocName());
-        query.setParameter("employeeDocumentNumber", exUserView.getDocNumber());
-        query.setParameter("employeeDocumentDate", exUserView.getDocDate());
-        query.setParameter("identificationDocumentCatalogCode", exUserView.getDocCode());
-        query.setParameter("countryCatalogCode", exUserView.getCitizenshipCode());
+        query.setParameter("id", upUserView.getId());
+        query.setParameter("firstName", upUserView.getFirstName());
+        query.setParameter("secondName", upUserView.getSecondName());
+        query.setParameter("middleName", upUserView.getMiddleName());
+        query.setParameter("position", upUserView.getPosition());
+        query.setParameter("isIdentified", upUserView.getIsIdentified());
+        query.setParameter("phone", upUserView.getPhone());
+        query.setParameter("employeeDocumentName", upUserView.getDocName());
+        query.setParameter("employeeDocumentNumber", upUserView.getDocNumber());
+        query.setParameter("employeeDocumentDate", upUserView.getDocDate());
+        query.setParameter("identificationDocumentCatalogCode", upUserView.getDocCode());
+        query.setParameter("countryCatalogCode", upUserView.getCitizenshipCode());
         Assert.assertNotNull(query.getSingleResult());
     }
 }

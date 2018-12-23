@@ -115,23 +115,23 @@ public class OrganizationDaoImpl implements OrganizationDaoI {
             }
             // FullName
             if (Objects.nonNull(org.getFullName())) {
-                updatedOrg.setName(org.getName());
+                updatedOrg.setFullName(org.getFullName());
             }
             // Inn
             if (Objects.nonNull(org.getInn())) {
-                updatedOrg.setName(org.getName());
+                updatedOrg.setInn(org.getInn());
             }
             // Kpp
             if (Objects.nonNull(org.getKpp())) {
-                updatedOrg.setName(org.getName());
+                updatedOrg.setKpp(org.getKpp());
             }
             // Address
             if (Objects.nonNull(org.getAddress())) {
                 updatedOrg.setAddress(org.getAddress());
             }
             // Active
-            if (Objects.nonNull(org.getActive())) {
-                updatedOrg.setActive(org.getActive());
+            if (Objects.nonNull(org.getIsActive())) {
+                updatedOrg.setIsActive(org.getIsActive());
             }
             // Phone
             if (Objects.nonNull(org.getPhone())) {

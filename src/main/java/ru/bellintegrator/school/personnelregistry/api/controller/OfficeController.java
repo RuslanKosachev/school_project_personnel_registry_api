@@ -17,7 +17,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
  * Controller управления информацией подразделения организации
  */
 @RestController
-@RequestMapping(value = "/api/Office", produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/office", produces = APPLICATION_JSON_VALUE)
 public class OfficeController {
 
     private final OfficeServiceI officeService;

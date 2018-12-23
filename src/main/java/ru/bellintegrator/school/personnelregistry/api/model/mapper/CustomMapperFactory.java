@@ -25,7 +25,6 @@ public class CustomMapperFactory implements FactoryBean<MapperFactory> {
                 .byDefault()
                 .register();
         mapperFactory.classMap(Employee.class, UserView.class)
-                //.field("office.get(0).id", "officeId") ///???????
                 .field("employeeDocument.date", "docDate")
                 .field("employeeDocument.number", "docNumber")
                 .field("employeeDocument.name", "docName")

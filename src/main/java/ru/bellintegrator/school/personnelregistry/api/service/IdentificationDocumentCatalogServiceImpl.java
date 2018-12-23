@@ -1,7 +1,12 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import ru.bellintegrator.school.personnelregistry.api.dao.IdentificationDocumentCatalogDaoI;
+import ru.bellintegrator.school.personnelregistry.api.model.IdentificationDocumentCatalog;
+import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.IdentificationDocumentCatalogView;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,9 +16,20 @@ import java.util.List;
  */
 @Service
 public class IdentificationDocumentCatalogServiceImpl implements IdentificationDocumentCatalogServiceI {
+
+    private final IdentificationDocumentCatalogDaoI identDocCatalogDao;
+    private final MapperFacade mapperFacade;
+
+    @Autowired
+    public IdentificationDocumentCatalogServiceImpl(IdentificationDocumentCatalogDaoI identDocCatalogDao, MapperFacade mapperFacade) {
+        this.identDocCatalogDao = identDocCatalogDao;
+        this.mapperFacade = mapperFacade;
+    }
+
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public List<IdentificationDocumentCatalogView> getList() {
         IdentificationDocumentCatalogView sampleDocument1 = new IdentificationDocumentCatalogView();
         sampleDocument1.setId(1);
@@ -35,6 +51,7 @@ public class IdentificationDocumentCatalogServiceImpl implements IdentificationD
         listCountries.add(1, sampleDocument2);
         listCountries.add(2, sampleDocument3);
 
-        return listCountries;
+        List<IdentificationDocumentCatalog> identDocCatalog = identDocCatalogDao.getList();
+        return mapperFacade.mapAsList(identDocCatalog, IdentificationDocumentCatalogView.class);
     }
 }

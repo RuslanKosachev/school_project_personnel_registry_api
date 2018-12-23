@@ -111,8 +111,8 @@ public class OfficeDaoImpl implements OfficeDaoI {
                 updatedOffice.setAddress(office.getAddress());
             }
             // setActive
-            if (Objects.nonNull(office.getActive())) {
-                updatedOffice.setActive(office.getActive());
+            if (Objects.nonNull(office.getIsActive())) {
+                updatedOffice.setIsActive(office.getIsActive());
             }
             // setPhone
             if (Objects.nonNull(office.getPhone())) {
