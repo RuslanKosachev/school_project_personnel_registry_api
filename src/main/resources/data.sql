@@ -62,48 +62,51 @@ INSERT INTO organization(id, name, full_name, inn, kpp, address, is_active, vers
 -- подразделение организации
 INSERT INTO office(id, name, address, is_active, organization_id, version)
   VALUES
-  (1, 'Институт энергетики и транспортных систем', 'г.Саратов', true, 1, 0),
-  (2, 'Институт электронной техники и машиностроения', 'г.Саратов', true, 1, 0),
+  (1, 'Институт энергетики и транспортных систем', 'г.Саратов',                    true, 1, 0),
+  (2, 'Институт электронной техники и машиностроения', 'г.Саратов',                true, 1, 0),
   (3, 'Институт прикладных информационных технологий и коммуникаций', 'г.Саратов', true, 1, 0),
-  (4, 'Физико-технический институт', 'г.Саратов', true, 1, 0),
-  (5, 'Институт урбанистики, архитектуры и строительства', 'г.Саратов', true, 1, 0),
-  (6, 'Институт социального и производственного менеджмента', 'г.Саратов', true, 1, 0);
+  (4, 'Физико-технический институт', 'г.Саратов',                                  true, 1, 0),
+  (5, 'Институт урбанистики, архитектуры и строительства', 'г.Саратов',            true, 1, 0),
+  (6, 'Институт социального и производственного менеджмента', 'г.Саратов',         true, 1, 0);
 
 -- работник
 SET @countryCatalogId = SELECT TOP 1 id FROM country_catalog WHERE code = 643;
-INSERT INTO employee(id, first_name, second_name, position, is_identified, country_catalog_id, version)
+INSERT INTO employee(id, first_name, second_name, middle_name, position, is_identified, country_catalog_id, version)
   VALUES
-  (1, 'Виктор','Прокопенко','Ассистент', true, @countryCatalogId, 0),
-  (2, 'Антон','Крук','Доцент', true, @countryCatalogId, 0),
-  (3, 'Оксана','Десятова','Доцент', true, @countryCatalogId, 0),
-  (4, 'Антонина','Шевченко','Профессор', true, @countryCatalogId, 0),
-  (5, 'Анатолий','Дмитров','Заведующий кафедрой ИнЭТМ', true, @countryCatalogId, 0),
-  (6, 'Иван','Кобзар','Директор', true, @countriesCatalogId, 0),
-  (7, 'Виктор','Грачь','Заместитель директора по научно-исследовательской работе', true, @countryCatalogId, 0),
-  (8, 'Ольга','Буткова','Заместитель директора по воспитательной работе', true, @countryCatalogId, 0),
-  (9, 'Алина','Мелова', 'Заместитель директора по учебной работе', true, @countryCatalogId, 0),
-  (10, 'Михаил','Савицкий','Ассистент', true, @countryCatalogId, 0),
-  (11, 'Артем','Крава','Ассистент', true, @countryCatalogId, 0);
+  (1, 'Виктор',   'Прокопенко', 'Прокопьевич', 'Ассистент',                                                true, @countryCatalogId,   0),
+  (2, 'Антон',    'Крук',       'Куркович',    'Доцент',                                                   true, @countryCatalogId,   0),
+  (3, 'Оксана',   'Десятова',   'Десятовна',   'Доцент',                                                   true, @countryCatalogId,   0),
+  (4, 'Антонина', 'Шевченко',   'Шефченковна', 'Профессор',                                                true, @countryCatalogId,   0),
+  (5, 'Анатолий', 'Дмитров',    'Дмитрович',   'Заведующий кафедрой ИнЭТМ',                                true, @countryCatalogId,   0),
+  (6, 'Иван',     'Кобзар',     'Кобзарович',  'Директор',                                                 true, @countryCatalogId,   0),
+  (7, 'Виктор',   'Грачь',      'Грачьеквич',  'Заместитель директора по научно-исследовательской работе', true, @countryCatalogId,   0),
+  (8, 'Ольга',    'Буткова',    'Бутковна',    'Заместитель директора по воспитательной работе',           true, @countryCatalogId,   0),
+  (9, 'Алина',    'Мелова',     'Меловна',     'Заместитель директора по учебной работе',                  true, @countryCatalogId,   0),
+  (10, 'Михаил',  'Савицкий',   'Савицкович',  'Ассистент',                                                true, @countryCatalogId,   0),
+  (11, 'Артем',   'Крава',      'Кравакович',  'Ассистент',                                                true, @countryCatalogId,   0);
 
 -- документ удостоверяющих личность работника
 SET @identificationDocumentCatalogId = SELECT id FROM identification_document_catalog WHERE code = 21;
-INSERT INTO employee_document(id, name, number, date, identification_document_catalog_id, employee_id, version)
+INSERT INTO
+  employee_document(id, name, number, date, identification_document_catalog_id, employee_id, version)
   VALUES
-  (1, 'паспорт','78946', '1985-12-04', @identificationDocumentCatalogId, 1, 0);
+  (1, 'паспорт',  '78946',  '1985-12-04', @identificationDocumentCatalogId, 1, 0),
+  (2, 'пассссс',  '987654', '1975-05-05', @identificationDocumentCatalogId, 2, 0);
 
 -- связь employee - Office
-INSERT INTO employee_office(employee_id, office_id)
+INSERT INTO
+  employee_office(employee_id, office_id)
   VALUES
-  (1, 2),
-  (2, 2),
-  (3, 2),
-  (4, 2),
-  (5, 2),
-  (6, 2),
-  (7, 2),
-  (8, 2),
-  (9, 2),
+  (1,  2),
+  (2,  2),
+  (3,  2),
+  (4,  2),
+  (5,  2),
+  (6,  2),
+  (7,  2),
+  (8,  2),
+  (9,  2),
   (10, 2),
   (11, 2),
-  (1, 3),
-  (1, 4);
+  (1,  3),
+  (1,  4);

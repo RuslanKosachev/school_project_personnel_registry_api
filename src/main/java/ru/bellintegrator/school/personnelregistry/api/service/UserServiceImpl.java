@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserServiceI {
         map.put("firstName", filter.getFirstName());
         map.put("secondName", filter.getSecondName());
         map.put("middleName", filter.getMiddleName());
-        map.put("position(", filter.getPosition());
+        map.put("position", filter.getPosition());
         map.put("docCode", filter.getDocCode());
         map.put("citizenshipCode", filter.getCitizenshipCode());
 
