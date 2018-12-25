@@ -1,6 +1,8 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
 import ru.bellintegrator.school.personnelregistry.api.dao.OrganizationDaoI;
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorCode;
 import ru.bellintegrator.school.personnelregistry.api.model.Organization;
 import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.OrganizationView;
@@ -8,6 +10,8 @@ import ru.bellintegrator.school.personnelregistry.api.view.OrganizationView;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,10 +39,11 @@ public class OrganizationServiceImpl implements OrganizationServiceI {
     public List<OrganizationView> getList(OrganizationView filter) {
         //заполним фильтр
         Map<String, Object> map = new HashMap<>();
-        map.put("name", filter.getName());
-        map.put("inn", filter.getInn());
-        map.put("isActive", filter.getIsActive());
-
+        if (Objects.nonNull(filter)) {
+            map.put("name", filter.getName());
+            map.put("inn", filter.getInn());
+            map.put("isActive", filter.getIsActive());
+        }
         List<Organization> office = orgDao.getList(map);
         return mapperFacade.mapAsList(office, OrganizationView.class);
     }
@@ -46,7 +51,8 @@ public class OrganizationServiceImpl implements OrganizationServiceI {
     /**
      * {@inheritDoc}
      */
-    public OrganizationView getById(Integer id) {
+    @Transactional(readOnly = true)
+    public OrganizationView getById(Integer id) throws DaoException {
         Organization office = orgDao.getById(id);
         return  mapperFacade.map(office, OrganizationView.class);
     }
@@ -55,7 +61,11 @@ public class OrganizationServiceImpl implements OrganizationServiceI {
      * {@inheritDoc}
      */
     @Transactional
-    public  Boolean create(OrganizationView param) {
+    public  Boolean create(OrganizationView param) throws ViewException, DaoException {
+        if (Objects.isNull(param)) {
+            throw new ViewException(ErrorCode.ORG_V_NULL);
+        }
+
         Organization orgNew = mapperFacade.map(param, Organization.class);
         Organization orgPersist = orgDao.create(orgNew);
 
@@ -69,7 +79,11 @@ public class OrganizationServiceImpl implements OrganizationServiceI {
      * {@inheritDoc}
      */
     @Transactional
-    public Boolean update(OrganizationView param) {
+    public Boolean update(OrganizationView param) throws ViewException, DaoException {
+        if (Objects.isNull(param)) {
+            throw new ViewException(ErrorCode.ORG_V_NULL);
+        }
+
         Organization org = mapperFacade.map(param, Organization.class);
         Organization orgUpdated = orgDao.update(org);
 

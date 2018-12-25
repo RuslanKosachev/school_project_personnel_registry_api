@@ -5,7 +5,9 @@ import ru.bellintegrator.school.personnelregistry.api.view.CountryCatalogView;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -27,10 +29,10 @@ public class CountryCatalogController {
     /**
      * Возвращает все страны из каталога
      *
-     * @return
+     * @return список объектов {@link CountryCatalogView}
      */
     @PostMapping("/countries")
-    public List<CountryCatalogView> getList() throws ViewException {
+    public List<CountryCatalogView> getList() {
         return countryCatalogService.getList();
     }
 }

@@ -1,10 +1,10 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 
-import javax.validation.constraints.Min;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 /**
@@ -18,48 +18,49 @@ public class OrganizationView {
     /**
      * Идентификатор
      */
-    @Min(value = 1,
-         message = ErrorMessage.ORGANIZATION_ID_MIN)
+    @Min(value = 1, message = ErrorMessage.ORG_V_ID_NEGATIVE_OR_ZERO)
     private Integer id;
 
     /**
      * Короткое наименование
      */
-    @Size(max = 100,
-          message = "Наименование организации не должно превышать 100 символов")
+    @Size(min = 1, message = ErrorMessage.ORG_V_NAME_MIN)
+    @Size(max = 100, message = ErrorMessage.ORG_V_NAME_MAX)
     private String name;
 
     /**
      * Полное наименование
      */
-    @Size(max = 350,
-          message = "Полное наименование организации не должно превышать 350 символов")
+    @Size(min = 1, message = ErrorMessage.ORG_V_FULL_NAME_MIN)
+    @Size(max = 350, message = ErrorMessage.ORG_V_FULL_NAME_MAX)
     private String fullName;
 
     /**
      * Идентификационный номер налогоплательщика
      */
     @Pattern(regexp = "\\d{10,12}",
-             message = ErrorMessage.ORGANIZATION_INN_PATTERN)
+             message = ErrorMessage.ORG_V_INN_PATTERN)
     private String inn;
 
     /**
      *  Код причины постановки на учет в налоговых органах
      */
     @Pattern(regexp = "\\d{9}",
-            message = ErrorMessage.ORGANIZATION_KPP_PATTERN)
+            message = ErrorMessage.ORG_V_KPP_PATTERN)
     private String kpp;
 
     /**
      * Адрес
      */
-    @Size(max = 255, message = "Адрес не должен превышать 350 символов")
+    @Size(min = 1, message = ErrorMessage.ORG_V_ADDRESS_MIN)
+    @Size(max = 350, message = ErrorMessage.ORG_V_ADDRESS_MAX)
     private String address;
 
     /**
      * Телофон
      */
-    @Size(max = 20, message = "Номер телефона не должен превышать 20 символов")
+    @Size(min = 1, message = ErrorMessage.ORG_V_PHONE_MIN)
+    @Size(max = 20, message = ErrorMessage.ORG_V_PHONE_MAX)
     private String phone;
 
     /**

@@ -1,7 +1,7 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -31,7 +31,7 @@ public class IdentificationDocumentCatalogView {
      */
     @NotEmpty(message = "Код документа не может быть пустым")
     @Pattern(regexp = "\\d{1,2}",
-             message = ErrorMessage.IDENTIFICATION_DOCUMENT_CATALOG_PATTERN)
+             message = ErrorMessage.IDENTIFICATION_DOCUMENT_CATALOG_V_PATTERN)
     private String code;
 
     public Integer getId() {

@@ -1,11 +1,12 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorCode;
 import ru.bellintegrator.school.personnelregistry.api.model.Employee;
 import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.EmployeeDocument;
 import ru.bellintegrator.school.personnelregistry.api.model.IdentificationDocumentCatalog;
 import ru.bellintegrator.school.personnelregistry.api.model.CountryCatalog;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.SetJoin;
-import javax.persistence.NoResultException;
 import java.util.*;
 
 /**
@@ -86,24 +86,28 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
      * {@inheritDoc}
      */
     @Override
-    public Employee getById(Integer id) {
-        return em.find(Employee.class, id);
+    public Employee getById(Integer id) throws DaoException {
+        Employee employee = em.find(Employee.class, id);
+        if (Objects.isNull(employee)) {
+            throw new DaoException(ErrorCode.EMPLOYEE_SQL_BY_ID_NO_RESULT);
+        }
+        return employee;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Employee create(Employee employee) {
+    public Employee create(Employee employee) throws DaoException {
         // обязательные проверки
         if (Objects.isNull(employee)) {
-            throw new NullPointerException(ErrorMessage.ARG_NULL);
+            throw new DaoException(ErrorCode.EMPLOYEE_NULL);
         }
         if (Objects.isNull(employee.getFirstName())) {
-            throw new NullPointerException(ErrorMessage.USER_FIRST_NAME_NULL);
+            throw new DaoException(ErrorCode.EMPLOYEE_FNAME_NULL);
         }
         if (Objects.isNull(employee.getPosition())) {
-            throw new NullPointerException(ErrorMessage.USER_POSITION_NULL);
+            throw new DaoException(ErrorCode.EMPLOYEE_POSITION_NULL);
         }
 
         // EmployeeDocument если есть документ то свяжем его с сотрудником
@@ -114,11 +118,7 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
             if (Objects.nonNull(identificationDocumentCatalog)) {
                 identificationDocumentCatalog
                         = identificationDocumentCatalogDao.getByCode(identificationDocumentCatalog.getCode());
-                if (Objects.nonNull(identificationDocumentCatalog)) {
-                    employeeDocument.setDocumentCatalog(identificationDocumentCatalog);
-                } else {
-                    throw new NullPointerException(" не найден объект запроса IdentificationDocumentCatalog");
-                }
+                employeeDocument.setDocumentCatalog(identificationDocumentCatalog);
             }
             // todo реализовать добавление документа к сотруднику
             employeeDocument.setEmployee(employee);
@@ -127,11 +127,7 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
         CountryCatalog countryCatalog = employee.getCountry();
         if (Objects.nonNull(countryCatalog)) {
             countryCatalog = countryCatalogDao.getByCode(countryCatalog.getCode());
-            if (Objects.nonNull(countryCatalog)) {
-                employee.setCountry(countryCatalog);
-            } else {
-                throw new NullPointerException("не найден объект запроса CountryCatalog");
-            }
+            employee.setCountry(countryCatalog);
         }
 
         em.persist(employee);
@@ -142,13 +138,13 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
      * {@inheritDoc}
      */
     @Override
-    public Employee update(Employee employee) {
+    public Employee update(Employee employee) throws DaoException {
         // обязательные проверки
         if (Objects.isNull(employee)) {
-            throw new NullPointerException(ErrorMessage.ARG_NULL);
+            throw new DaoException(ErrorCode.EMPLOYEE_NULL);
         }
         if (Objects.isNull(employee.getId())) {
-            throw new NullPointerException(ErrorMessage.USER_ID_NULL);
+            throw new DaoException(ErrorCode.EMPLOYEE_ID_NULL);
         }
         // получим объект который нужно изменить
         Employee updatedEmployee = em.find(Employee.class, employee.getId());
@@ -193,11 +189,7 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
                 if (Objects.nonNull(identificationDocumentCatalog)) {
                     identificationDocumentCatalog
                             = identificationDocumentCatalogDao.getByCode(identificationDocumentCatalog.getCode());
-                    if (Objects.nonNull(identificationDocumentCatalog)) {
-                        updatedEmployeeDocument.setDocumentCatalog(identificationDocumentCatalog);
-                    } else {
-                        throw new NullPointerException(" не найден объект запроса IdentificationDocumentCatalog");
-                    }
+                    updatedEmployeeDocument.setDocumentCatalog(identificationDocumentCatalog);
                 }
                 // docName
                 if (Objects.nonNull(employeeDocument.getName())) {
@@ -214,20 +206,17 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
                 // todo реализовать добавление документа к сотруднику
                 updatedEmployeeDocument.setEmployee(updatedEmployee);
             }
-            // CountryCatalog если указано гражданство через код
+            // CountryCatalog если указано гражданство через код государства
             CountryCatalog countryCatalog = employee.getCountry();
             if (Objects.nonNull(countryCatalog)) {
                 countryCatalog = countryCatalogDao.getByCode(countryCatalog.getCode());
-                if (Objects.nonNull(countryCatalog)) {
-                    updatedEmployee.setCountry(countryCatalog);
-                } else {
-                    throw new NullPointerException("не найден объект запроса IdentificationDocumentCatalog");
-                }
+                updatedEmployee.setCountry(countryCatalog);
             }
             // фиксируем изменения
             em.merge(updatedEmployee);
         } else {
-            throw new NullPointerException("не найден объект запроса Employee");
+            // todo нужна ошибка обновления сотрудника
+            throw new DaoException(ErrorCode.EMPLOYEE_SQL_BY_ID_NO_RESULT);
         }
 
         return updatedEmployee;

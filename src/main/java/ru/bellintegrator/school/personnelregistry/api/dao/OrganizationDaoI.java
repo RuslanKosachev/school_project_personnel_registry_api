@@ -1,5 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
 import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.Organization;
 
@@ -25,7 +26,7 @@ public interface OrganizationDaoI {
      * @return при успешном запросе - объект сущность {@link Organization},
      *         иначе null
      */
-    Organization getById(Integer id);
+    Organization getById(Integer id) throws DaoException;
 
     /**
      * Сохранить сущность
@@ -33,7 +34,7 @@ public interface OrganizationDaoI {
      * @param employee - {@link Office}
      * @return при успешном сохранении возвращает экземпляр обновленного объекта
      */
-    Organization create(Organization employee);
+    Organization create(Organization employee) throws DaoException;
 
     /**
      * Обновиляет данные сущности
@@ -41,5 +42,5 @@ public interface OrganizationDaoI {
      * @param employee - {@link Organization}
      * @return при успешном обновлении возвращает экземпляр обновленного объекта
      */
-    Organization update(Organization employee);
+    Organization update(Organization employee) throws DaoException;
 }

@@ -1,7 +1,8 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorCode;
 import ru.bellintegrator.school.personnelregistry.api.model.Organization;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -61,33 +62,37 @@ public class OrganizationDaoImpl implements OrganizationDaoI {
      * {@inheritDoc}
      */
     @Override
-    public Organization getById(Integer id) {
-        return em.find(Organization.class, id);
+    public Organization getById(Integer id) throws DaoException {
+        Organization organization = em.find(Organization.class, id);
+        if (Objects.isNull(organization)) {
+            throw new DaoException(ErrorCode.OFFICE_SQL_BY_ID_NO_RESULT);
+        }
+        return organization;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Organization create(Organization org) {
+    public Organization create(Organization org) throws DaoException {
         // обязательные проверки
         if (Objects.isNull(org)) {
-            throw new NullPointerException(ErrorMessage.ARG_NULL);
+            throw new DaoException(ErrorCode.ORG_NULL);
         }
         if (Objects.isNull(org.getName())) {
-            throw new NullPointerException(ErrorMessage.ORGANIZATION_NAME_NULL);
+            throw new DaoException(ErrorCode.ORG_NAME_NULL);
         }
         if (Objects.isNull(org.getFullName())) {
-            throw new NullPointerException(ErrorMessage.ORGANIZATION_FULL_NAME_NULL);
+            throw new DaoException(ErrorCode.ORG_FULL_NAME_NULL);
         }
         if (Objects.isNull(org.getInn())) {
-            throw new NullPointerException(ErrorMessage.ORGANIZATION_INN_NULL);
+            throw new DaoException(ErrorCode.ORG_INN_NULL);
         }
         if (Objects.isNull(org.getKpp())) {
-            throw new NullPointerException(ErrorMessage.ORGANIZATION_KPP_NULL);
+            throw new DaoException(ErrorCode.ORG_KPP_NULL);
         }
         if (Objects.isNull(org.getAddress())) {
-            throw new NullPointerException(ErrorMessage.ORGANIZATION_ADDRESS_NULL);
+            throw new DaoException(ErrorCode.ORG_ADDRESS_NULL);
         }
         em.persist(org);
         return org;
@@ -97,13 +102,13 @@ public class OrganizationDaoImpl implements OrganizationDaoI {
      * {@inheritDoc}
      */
     @Override
-    public Organization update(Organization org) {
+    public Organization update(Organization org) throws DaoException {
         // обязательные проверки
         if (Objects.isNull(org)) {
-            throw new NullPointerException(ErrorMessage.ARG_NULL);
+            throw new DaoException(ErrorCode.ORG_NULL);
         }
         if (Objects.isNull(org.getId())) {
-            throw new NullPointerException(ErrorMessage.OFFICE_ID_NULL);
+            throw new DaoException(ErrorCode.ORG_ID_NULL);
         }
         // получим объект который нужно изменить
         Organization updatedOrg = em.find(Organization.class, org.getId());
@@ -141,7 +146,7 @@ public class OrganizationDaoImpl implements OrganizationDaoI {
             // фиксируем изменения
             em.merge(updatedOrg);
         } else {
-            throw new NullPointerException("не найден объект запроса Organization");
+            throw new DaoException(ErrorCode.ORG_SQL_BY_ID_NO_RESULT);
         }
 
         return updatedOrg;

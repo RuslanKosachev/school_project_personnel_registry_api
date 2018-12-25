@@ -1,7 +1,7 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 
 import javax.validation.constraints.*;
 import java.util.Objects;
@@ -28,7 +28,7 @@ public class CountryCatalogView {
      * Цифровой код страны по ISO 3166-1
      */
     @Pattern(regexp = "\\d{1,3}",
-             message = ErrorMessage.COUNTRY_CATALOG_PATTERN)
+             message = ErrorMessage.COUNTRY_CATALOG_V_PATTERN)
     @NotEmpty(message = "Цифровой код страны по ISO 3166-1 не может быть пустым")
     private String code;
 

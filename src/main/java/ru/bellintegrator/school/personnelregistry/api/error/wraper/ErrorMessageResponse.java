@@ -1,4 +1,4 @@
-package ru.bellintegrator.school.personnelregistry.api.view.exception.wraper;
+package ru.bellintegrator.school.personnelregistry.api.error.wraper;
 
 /**
  * Класс-view для сообщением об ошибках от сервера

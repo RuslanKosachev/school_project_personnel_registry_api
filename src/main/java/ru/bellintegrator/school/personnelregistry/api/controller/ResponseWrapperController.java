@@ -1,6 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.controller;
 
-import ru.bellintegrator.school.personnelregistry.api.view.exception.wraper.ErrorMessageResponse;
+import ru.bellintegrator.school.personnelregistry.api.error.wraper.ErrorMessageResponse;
 import ru.bellintegrator.school.personnelregistry.api.view.wrapper.Data;
 import ru.bellintegrator.school.personnelregistry.api.view.wrapper.Result;
 

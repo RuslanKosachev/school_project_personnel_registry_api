@@ -1,10 +1,12 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 /**
@@ -19,70 +21,76 @@ public class UserView {
     /**
      * Идентификатор
      */
-    @Min(value = 1, message = "id не должен быть меньше единицы")
+    @Min(value = 1, message = ErrorMessage.USER_V_ID_NEGATIVE_OR_ZERO)
     private Integer id;
 
     /**
      * Имя
      */
-    @Size(max = 50, message = "Имя не должно превышать 50 символов")
+    @Size(min = 1, message = ErrorMessage.USER_V_FNAME_MIN)
+    @Size(max = 50, message = ErrorMessage.USER_V_FNAME_MAX)
     private String firstName;
 
     /**
      * Фамилия
      */
-    @Size(max = 50, message = "Фамилия не должна превышать 50 символов")
+    @Size(min = 1, message = ErrorMessage.USER_V_SNAME_MIN)
+    @Size(max = 50, message = ErrorMessage.USER_V_SNAME_MAX)
     private String secondName;
 
     /**
      * Отчество
      */
-    @Size(max = 50, message = "Отчество не должно превышать 50 символов")
+    @Size(min = 1, message = ErrorMessage.USER_V_MNAME_MIN)
+    @Size(max = 50, message = ErrorMessage.USER_V_MNAME_MAX)
     private String middleName;
 
     /**
      * Должность
      */
-    @Size(max = 100, message = "Должность не должно превышать 100 символов")
+    @Size(min = 1, message = ErrorMessage.USER_V_POSITION_MIN)
+    @Size(max = 100, message = ErrorMessage.USER_V_POSITION_MAX)
     private String position;
 
     /**
      * Телефон
      */
-    @Size(max = 20, message = "Номер телефона не должен превышать 20 символов")
+    @Size(min = 1, message = ErrorMessage.USER_V_PHONE_MIN)
+    @Size(max = 20, message = ErrorMessage.USER_V_PHONE_MAX)
     private String phone;
 
     /**
-     * Код типа документа согласно приложению №3
+     * Код типа документа удостоверяющего личность согласно приложению №3
      * приказа ФНС России от 25.01.2012 N ММВ-7-6/25@ (ред. от 25.05.2016)
      */
     @Pattern(regexp = "\\d{1,2}",
-             message = ErrorMessage.IDENTIFICATION_DOCUMENT_CATALOG_PATTERN)
+             message = ErrorMessage.IDENTIFICATION_DOCUMENT_CATALOG_V_PATTERN)
     private String docCode;
 
     /**
-     * Наименование документа
+     * Наименование документа удостоверяющего личность
      */
-    @Size(max = 250, message = "Наименование документа не может превышать 250 символов")
+    @Size(min = 1, message = ErrorMessage.USER_V_DOC_NAME_MIN)
+    @Size(max = 250, message = ErrorMessage.USER_V_DOC_NAME_MAX)
     private String docName;
 
     /**
-     * Наименование документа согласно приложению №3
+     * Наименование документа удостоверяющего личность согласно приложению №3
      * приказа ФНС России от 25.01.2012 N ММВ-7-6/25@ (ред. от 25.05.2016)
      */
-    @Size(max = 250, message = "Наименование документа не может превышать 250 символов")
     private String docNameCatalog;
 
     /**
-     * Номер документа
+     * Номер документа удостоверяющего личность
      */
-    @Size(max = 20, message = "Номер документа не может превышать 20 символов")
+    @Size(min = 1, message = ErrorMessage.USER_V_DOC_NUMBER_MIN)
+    @Size(max = 20, message = ErrorMessage.USER_V_DOC_NUMBER_MAX)
     private String docNumber;
 
     /**
-     * Дата документа
+     * Дата документа удостоверяющего личность
      */
-    @PastOrPresent(message = "Дата документа должна быть прошлым или настоящим")
+    // todo нужна валидация даты
     private LocalDate docDate;
 
     /**
@@ -94,7 +102,7 @@ public class UserView {
      * Код государства. Трехзначный цифровой код
      */
     @Pattern(regexp = "\\d{1,3}",
-             message = ErrorMessage.COUNTRY_CATALOG_PATTERN)
+             message = ErrorMessage.COUNTRY_CATALOG_V_PATTERN)
     private String citizenshipCode;
 
     /**
@@ -102,7 +110,7 @@ public class UserView {
      */
     private Boolean isIdentified;
 
-    @Min(value = 1, message = "Id не должен быть меньше единицы")
+    @Min(value = 1, message = ErrorMessage.OFFICE_V_ID_NEGATIVE_OR_ZERO)
     private Integer officeId;
 
     public Integer getId() {

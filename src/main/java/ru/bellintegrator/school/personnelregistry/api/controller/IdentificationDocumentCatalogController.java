@@ -1,6 +1,8 @@
 package ru.bellintegrator.school.personnelregistry.api.controller;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import ru.bellintegrator.school.personnelregistry.api.service.IdentificationDocumentCatalogServiceI;
 import ru.bellintegrator.school.personnelregistry.api.view.IdentificationDocumentCatalogView;
 
@@ -26,7 +28,7 @@ public class IdentificationDocumentCatalogController {
     /**
      * Возвращает все типы дкументов из каталога
      *
-     * @return
+     * @return список объектов {@link IdentificationDocumentCatalogView}
      */
     @PostMapping("/docs")
     public List<IdentificationDocumentCatalogView> getList() {

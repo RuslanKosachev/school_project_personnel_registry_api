@@ -1,5 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
 import ru.bellintegrator.school.personnelregistry.api.model.Employee;
 import ru.bellintegrator.school.personnelregistry.api.model.CountryCatalog;
 
@@ -25,7 +26,7 @@ public interface CountryCatalogDaoI {
      * @return при успешном запросе - объект сущность {@link CountryCatalog},
      *         иначе null
      */
-    CountryCatalog getById(Integer id);
+    CountryCatalog getById(Integer id) throws DaoException;
 
     /**
      * Получить Сущность по полю code
@@ -34,5 +35,5 @@ public interface CountryCatalogDaoI {
      * @return при успешном запросе - объект сущность {@link CountryCatalog},
      *         иначе null
      */
-    CountryCatalog getByCode(String code);
+    CountryCatalog getByCode(String code) throws DaoException;
 }

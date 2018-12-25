@@ -1,7 +1,9 @@
 package ru.bellintegrator.school.personnelregistry.api.service;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
 import ru.bellintegrator.school.personnelregistry.api.model.Employee;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public interface UserServiceI {
      * @param id уникальный идентификатор сущности {@link Employee}
      * @return объект {@link UserView}
      */
-    UserView getById(Integer id);
+    UserView getById(Integer id) throws DaoException;
 
     /**
      * Сохраняет(создает) нового сотрудника
@@ -32,7 +34,7 @@ public interface UserServiceI {
      * @return при успешном добавлении значение - true
      * @see UserView
      */
-    Boolean create(UserView param);
+    Boolean create(UserView param) throws DaoException, ViewException;
 
     /**
      * Обновиляет данные сотрудника
@@ -40,5 +42,5 @@ public interface UserServiceI {
      * @param param - {@link UserView}
      * @return при успешном обновлении значение - true
      */
-    Boolean update(UserView param);
+    Boolean update(UserView param) throws DaoException, ViewException;
 }

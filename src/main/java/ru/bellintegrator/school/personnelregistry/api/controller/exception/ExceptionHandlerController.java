@@ -1,11 +1,12 @@
 package ru.bellintegrator.school.personnelregistry.api.controller.exception;
 
+import ru.bellintegrator.school.personnelregistry.api.error.wraper.ErrorMessageResponse;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.wraper.ErrorMessageResponse;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
 
 /**
  * Обработывает исключения контроллеров api

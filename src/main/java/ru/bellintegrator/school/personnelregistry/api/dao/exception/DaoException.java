@@ -1,29 +1,29 @@
-package ru.bellintegrator.school.personnelregistry.api.view.exception;
+package ru.bellintegrator.school.personnelregistry.api.dao.exception;
 
 import ru.bellintegrator.school.personnelregistry.api.error.ErrorCode;
 
 /**
- *  Исключение для View
+ *  Исключение для модуля DAO
  */
-public class ViewException extends Exception {
+public class DaoException extends Exception {
 
     ErrorCode errorCode;
 
-    public ViewException(ErrorCode errorCode, Throwable cause) {
+    public DaoException(ErrorCode errorCode, Throwable cause) {
         super(errorCode.getErrorString(), cause);
         this.errorCode = errorCode;
     }
 
-    public ViewException(ErrorCode errorCode) {
+    public DaoException(ErrorCode errorCode) {
         super(errorCode.getErrorString());
         this.errorCode = errorCode;
     }
 
-    public ViewException(String value) {
+    public DaoException(String value) {
         super(value);
     }
 
-    public ViewException(String value, Throwable cause) {
+    public DaoException(String value, Throwable cause) {
         super(value, cause);
     }
 

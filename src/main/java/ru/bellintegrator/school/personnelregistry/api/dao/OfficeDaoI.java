@@ -1,5 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
 import ru.bellintegrator.school.personnelregistry.api.model.Office;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface OfficeDaoI {
      * @return при успешном запросе - объект сущность {@link Office},
      *         иначе null
      */
-    Office getById(Integer id);
+    Office getById(Integer id) throws DaoException;
 
     /**
      * Сохранить сущность
@@ -32,7 +33,7 @@ public interface OfficeDaoI {
      * @param employee - {@link Office}
      * @return при успешном сохранении возвращает экземпляр обновленного объекта
      */
-    Office create(Office employee);
+    Office create(Office employee) throws DaoException;
 
     /**
      * Обновиляет данные сущности
@@ -40,5 +41,5 @@ public interface OfficeDaoI {
      * @param employee - {@link Office}
      * @return при успешном обновлении возвращает экземпляр обновленного объекта
      */
-    Office update(Office employee);
+    Office update(Office employee) throws DaoException;
 }

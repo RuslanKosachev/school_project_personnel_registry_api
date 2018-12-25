@@ -2,15 +2,18 @@ package ru.bellintegrator.school.personnelregistry.api.service;
 
 import ru.bellintegrator.school.personnelregistry.api.dao.EmployeeDaoI;
 import ru.bellintegrator.school.personnelregistry.api.dao.OfficeDaoI;
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorCode;
 import ru.bellintegrator.school.personnelregistry.api.model.Employee;
 import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.UserView;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 
 /**
@@ -33,17 +36,19 @@ public class UserServiceImpl implements UserServiceI {
     /**
      * {@inheritDoc}
      */
+    @Transactional(readOnly = true)
     public List<UserView> getList(UserView filter) {
         //заполним фильтр
         Map<String, Object> map = new HashMap<>();
-        map.put("officeId", filter.getOfficeId());
-        map.put("firstName", filter.getFirstName());
-        map.put("secondName", filter.getSecondName());
-        map.put("middleName", filter.getMiddleName());
-        map.put("position", filter.getPosition());
-        map.put("docCode", filter.getDocCode());
-        map.put("citizenshipCode", filter.getCitizenshipCode());
-
+        if (Objects.nonNull(filter)) {
+            map.put("officeId", filter.getOfficeId());
+            map.put("firstName", filter.getFirstName());
+            map.put("secondName", filter.getSecondName());
+            map.put("middleName", filter.getMiddleName());
+            map.put("position", filter.getPosition());
+            map.put("docCode", filter.getDocCode());
+            map.put("citizenshipCode", filter.getCitizenshipCode());
+        }
         List<Employee> employees = employeeDao.getList(map);
         return mapperFacade.mapAsList(employees, UserView.class);
     }
@@ -52,8 +57,8 @@ public class UserServiceImpl implements UserServiceI {
      * {@inheritDoc}
      */
     @Override
-    @Transactional
-    public UserView getById(Integer id) {
+    @Transactional(readOnly = true)
+    public UserView getById(Integer id) throws DaoException {
         Employee employee = employeeDao.getById(id);
         return  mapperFacade.map(employee, UserView.class);
     }
@@ -61,22 +66,20 @@ public class UserServiceImpl implements UserServiceI {
     /**
      * {@inheritDoc}
      */
-    // todo ПЕРЕРАБОТАТЬ АЛГОРИТМ ПЕРЕРАБОТАТЬ АЛГОРИТМ ПЕРЕРАБОТАТЬ АЛГОРИТМ
     @Override
     @Transactional
-    public Boolean create(UserView param) {
-        if (Objects.isNull(param.getOfficeId())) {
-            throw new NullPointerException(ErrorMessage.OFFICE_ID_NULL);
+    public Boolean create(UserView param) throws DaoException, ViewException {
+        if (Objects.isNull(param)) {
+            throw new ViewException(ErrorCode.USER_V_NULL);
         }
-
-        Employee employeeNew = mapperFacade.map(param, Employee.class);
-        Employee employeePersist = employeeDao.create(employeeNew);
 
         Office office = officeDao.getById(param.getOfficeId());
 
-        if (Objects.nonNull(employeePersist) && Objects.nonNull(office)) {
-            office.addEmployee(employeePersist);
+        Employee employeeNew = mapperFacade.map(param, Employee.class);
+        Employee employeePersist = employeeDao.create(employeeNew);
+        office.addEmployee(employeePersist);
 
+        if (Objects.nonNull(employeePersist)) {
             return true;
         }
         return false;
@@ -86,7 +89,11 @@ public class UserServiceImpl implements UserServiceI {
      * {@inheritDoc}
      */
     @Transactional
-    public Boolean update(UserView userView) {
+    public Boolean update(UserView userView) throws DaoException, ViewException {
+        if (Objects.isNull(userView)) {
+            throw new ViewException(ErrorCode.USER_V_NULL);
+        }
+
         Employee employee = mapperFacade.map(userView, Employee.class);
         Employee updatedEmployee = employeeDao.update(employee);
 

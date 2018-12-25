@@ -1,14 +1,17 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorCode;
+import ru.bellintegrator.school.personnelregistry.api.model.Office;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import ru.bellintegrator.school.personnelregistry.api.model.*;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ErrorMessage;
-
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Predicate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +53,6 @@ public class OfficeDaoImpl implements OfficeDaoI {
         if (Objects.nonNull(filter.get("isActive"))) {
             predicates.add(builder.equal(rootEmployee.get("isActive"), filter.get("isActive")));
         }
-
         criteriaQuery
             .where(predicates.toArray(new Predicate[]{}))
             .select(rootEmployee);
@@ -62,26 +64,29 @@ public class OfficeDaoImpl implements OfficeDaoI {
      * {@inheritDoc}
      */
     @Override
-    public Office getById(Integer id) {
-        return em.find(Office.class, id);
+    public Office getById(Integer id) throws DaoException {
+        Office office = em.find(Office.class, id);
+        if (Objects.isNull(office)) {
+            throw new DaoException(ErrorCode.OFFICE_SQL_BY_ID_NO_RESULT);
+        }
+        return office;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Office create(Office office) {
+    public Office create(Office office) throws DaoException {
         // обязательные проверки
         if (Objects.isNull(office)) {
-            throw new NullPointerException(ErrorMessage.ARG_NULL);
+            throw new DaoException(ErrorCode.OFFICE_NULL);
         }
         if (Objects.isNull(office.getName())) {
-            throw new NullPointerException(ErrorMessage.OFFICE_NAME_NULL);
+            throw new DaoException(ErrorCode.OFFICE_NAME_NULL);
         }
         if (Objects.isNull(office.getAddress())) {
-            throw new NullPointerException(ErrorMessage.OFFICE_ADDRESS_NULL);
+            throw new DaoException(ErrorCode.OFFICE_ADDRESS_NULL);
         }
-
         em.persist(office);
         return office;
     }
@@ -90,13 +95,13 @@ public class OfficeDaoImpl implements OfficeDaoI {
      * {@inheritDoc}
      */
     @Override
-    public Office update(Office office) {
+    public Office update(Office office) throws DaoException {
         // обязательные проверки
         if (Objects.isNull(office)) {
-            throw new NullPointerException(ErrorMessage.ARG_NULL);
+            throw new DaoException(ErrorCode.OFFICE_NULL);
         }
         if (Objects.isNull(office.getId())) {
-            throw new NullPointerException(ErrorMessage.OFFICE_ID_NULL);
+            throw new DaoException(ErrorCode.OFFICE_ID_NULL);
         }
         // получим объект который нужно изменить
         Office updatedOffice = em.find(Office.class, office.getId());
@@ -118,13 +123,11 @@ public class OfficeDaoImpl implements OfficeDaoI {
             if (Objects.nonNull(office.getPhone())) {
                 updatedOffice.setPhone(office.getPhone());
             }
-
             // фиксируем изменения
             em.merge(updatedOffice);
         } else {
-            throw new NullPointerException("не найден объект запроса Office");
+            throw new DaoException(ErrorCode.OFFICE_SQL_BY_ID_NO_RESULT);
         }
-
         return updatedOffice;
     }
 }

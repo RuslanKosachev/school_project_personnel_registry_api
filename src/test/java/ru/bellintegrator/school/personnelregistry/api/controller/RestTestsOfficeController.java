@@ -68,7 +68,7 @@ public class RestTestsOfficeController {
         filterOfficeView.setPhone("89061112364");
         filterOfficeView.setIsActive(true);
         filterOfficeView.setOrgId(1);
-
+System.out.println(filterOfficeView.getOrgId() + "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC");
         HttpEntity<OfficeView> httpEntity = new HttpEntity<>(filterOfficeView, headers);
         ResponseEntity<Data<List<OfficeView>>> response
             = rest.exchange(URI_LIST,

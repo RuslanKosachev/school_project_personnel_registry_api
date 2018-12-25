@@ -1,5 +1,7 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
+import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -12,25 +14,28 @@ public class OfficeView {
     /**
      * Идентификатор
      */
-    @Min(value = 1, message = "id не должен быть меньше единицы")
+    @Min(value = 1, message = ErrorMessage.OFFICE_V_ID_NEGATIVE_OR_ZERO)
     private Integer id;
 
     /**
      * Наименование
      */
-    @Size(max = 100, message = "Наименование офиса не должно превышать 100 символов")
+    @Size(min = 1, message = ErrorMessage.OFFICE_V_NAME_MIN)
+    @Size(max = 100, message = ErrorMessage.OFFICE_V_NAME_MAX)
     private String name;
 
     /**
      * Адрес
      */
-    @Size(max = 350, message = "Адрес не должен превышать 350 символов")
+    @Size(min = 1, message = ErrorMessage.OFFICE_V_ADDRESS_MIN)
+    @Size(max = 350, message = ErrorMessage.OFFICE_V_ADDRESS_MAX)
     private String address;
 
     /**
      * Телефон
      */
-    @Size(max = 20, message = "Номер телефона не должен превышать 20 символов")
+    @Size(min = 1, message = ErrorMessage.OFFICE_V_PHONE_MIN)
+    @Size(max = 20, message = ErrorMessage.OFFICE_V_PHONE_MAX)
     private String phone;
 
     /**
@@ -39,8 +44,9 @@ public class OfficeView {
     private Boolean isActive;
 
     /**
-     * Id организации офиса
+     * идентификатор организации
      */
+    @Min(value = 1, message = ErrorMessage.ORG_V_ID_NEGATIVE_OR_ZERO)
     private Integer orgId;
 
     public OfficeView() {

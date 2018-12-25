@@ -1,5 +1,6 @@
 package ru.bellintegrator.school.personnelregistry.api.dao;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
 import ru.bellintegrator.school.personnelregistry.api.model.IdentificationDocumentCatalog;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface IdentificationDocumentCatalogDaoI {
      * @return при успешном запросе - объект сущность {@link IdentificationDocumentCatalog},
      *         иначе null
      */
-    IdentificationDocumentCatalog getById(Integer id);
+    IdentificationDocumentCatalog getById(Integer id) throws DaoException;
 
     /**
      * Получить Сущность по полю code
@@ -32,5 +33,5 @@ public interface IdentificationDocumentCatalogDaoI {
      * @return при успешном запросе - объект сущность {@link IdentificationDocumentCatalog},
      *         иначе null
      */
-    IdentificationDocumentCatalog getByCode(String code);
+    IdentificationDocumentCatalog getByCode(String code) throws DaoException;
 }
