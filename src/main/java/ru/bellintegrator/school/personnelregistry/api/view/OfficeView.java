@@ -5,6 +5,7 @@ import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 /**
  * подразделение организации
@@ -65,7 +66,9 @@ public class OfficeView {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (Objects.nonNull(name)) {
+            this.name = name.trim();
+        }
     }
 
     public String getAddress() {
@@ -73,7 +76,9 @@ public class OfficeView {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        if (Objects.nonNull(address)) {
+            this.address = address.trim();
+        }
     }
 
     public String getPhone() {
@@ -81,7 +86,9 @@ public class OfficeView {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        if (Objects.nonNull(phone)) {
+            this.phone = phone.trim();
+        }
     }
 
     public Boolean getIsActive() {

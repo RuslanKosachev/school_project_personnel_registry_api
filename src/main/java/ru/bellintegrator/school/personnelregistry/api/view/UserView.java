@@ -1,13 +1,16 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * сотрудник
@@ -126,7 +129,9 @@ public class UserView {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if (Objects.nonNull(firstName)) {
+            this.firstName = firstName.trim();
+        }
     }
 
     public String getSecondName() {
@@ -134,7 +139,9 @@ public class UserView {
     }
 
     public void setSecondName(String secondName) {
-        this.secondName = secondName;
+        if (Objects.nonNull(secondName)) {
+            this.secondName = secondName.trim();
+        }
     }
 
     public String getMiddleName() {
@@ -142,7 +149,9 @@ public class UserView {
     }
 
     public void setMiddleName(String middleName) {
-        this.middleName = middleName;
+        if (Objects.nonNull(middleName)) {
+            this.middleName = middleName.trim();
+        }
     }
 
     public String getPosition() {
@@ -150,15 +159,20 @@ public class UserView {
     }
 
     public void setPosition(String position) {
-        this.position = position;
+        if (Objects.nonNull(position)) {
+            this.position = position.trim();
+        }
     }
 
     public String getPhone() {
         return phone;
     }
 
+    @JsonSetter(nulls = com.fasterxml.jackson.annotation.Nulls.SKIP)
     public void setPhone(String phone) {
-        this.phone = phone;
+       if(Objects.nonNull(phone)) {
+           this.phone = phone.trim();
+        }
     }
 
     public String getDocCode() {
@@ -166,7 +180,9 @@ public class UserView {
     }
 
     public void setDocCode(String docCode) {
-        this.docCode = docCode;
+        if (Objects.nonNull(docCode)) {
+            this.docCode = docCode.trim().replaceFirst("^0+(?!$)", "");
+        }
     }
 
     public String getDocName() {
@@ -174,7 +190,9 @@ public class UserView {
     }
 
     public void setDocName(String docName) {
-        this.docName = docName;
+        if (Objects.nonNull(docName)) {
+            this.docName = docName.trim();
+        }
     }
 
     public String getDocNumber() {
@@ -182,7 +200,9 @@ public class UserView {
     }
 
     public void setDocNumber(String docNumber) {
-        this.docNumber = docNumber;
+        if (Objects.nonNull(docNumber)) {
+            this.docNumber = docNumber.trim();
+        }
     }
 
     public LocalDate getDocDate() {
@@ -198,7 +218,9 @@ public class UserView {
     }
 
     public void setCitizenshipName(String citizenshipName) {
-        this.citizenshipName = citizenshipName;
+        if (Objects.nonNull(citizenshipName)) {
+            this.citizenshipName = citizenshipName.trim();
+        }
     }
 
     public String getCitizenshipCode() {
@@ -206,7 +228,9 @@ public class UserView {
     }
 
     public void setCitizenshipCode(String citizenshipCode) {
-        this.citizenshipCode = citizenshipCode;
+        if (Objects.nonNull(citizenshipCode)) {
+            this.citizenshipCode = citizenshipCode.trim().replaceFirst("^0+(?!$)", "");
+        }
     }
 
     public Boolean getIsIdentified() {
@@ -230,6 +254,8 @@ public class UserView {
     }
 
     public void setDocNameCatalog(String docNameCatalog) {
-        this.docNameCatalog = docNameCatalog;
+        if (Objects.nonNull(docNameCatalog)) {
+            this.docNameCatalog = docNameCatalog.trim();
+        }
     }
 }

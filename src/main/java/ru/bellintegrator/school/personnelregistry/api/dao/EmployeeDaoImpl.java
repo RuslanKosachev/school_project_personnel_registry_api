@@ -31,7 +31,9 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
 
 
     @Autowired
-    public EmployeeDaoImpl(EntityManager em, CountryCatalogDaoI countryCatalogDao, IdentificationDocumentCatalogDaoI identificationDocumentCatalogDao) {
+    public EmployeeDaoImpl(EntityManager em,
+                           CountryCatalogDaoI countryCatalogDao,
+                           IdentificationDocumentCatalogDaoI identificationDocumentCatalogDao) {
         this.em = em;
         this.countryCatalogDao = countryCatalogDao;
         this.identificationDocumentCatalogDao = identificationDocumentCatalogDao;
@@ -45,39 +47,38 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
         // составляем запрос по JPA Criteria API
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Employee> criteriaQuery = builder.createQuery(Employee.class);
-        Root<Employee> rootEmployee = criteriaQuery.from(Employee.class);
+        Root<Employee> root = criteriaQuery.from(Employee.class);
         List<Predicate> predicates = new LinkedList<>();
 
         if (Objects.nonNull(filter.get("officeId"))) {
-            // todo нужно оптимизировать
-            SetJoin<Employee, Office> joinUserOffice = rootEmployee.joinSet("offices");
+            SetJoin<Employee, Office> joinUserOffice = root.joinSet("offices");
 
             Office office = em.find(Office.class, filter.get("officeId"));
             predicates.add(joinUserOffice.in(office));
         }
         if (Objects.nonNull(filter.get("firstName"))) {
-            predicates.add(builder.equal(rootEmployee.get("firstName"), filter.get("firstName")));
+            predicates.add(builder.equal(root.get("firstName"), filter.get("firstName")));
         }
         if (Objects.nonNull(filter.get("secondName"))) {
-            predicates.add(builder.equal(rootEmployee.get("secondName"), filter.get("secondName")));
+            predicates.add(builder.equal(root.get("secondName"), filter.get("secondName")));
         }
         if (Objects.nonNull(filter.get("middleName"))) {
-            predicates.add(builder.equal(rootEmployee.get("middleName"), filter.get("middleName")));
+            predicates.add(builder.equal(root.get("middleName"), filter.get("middleName")));
         }
         if (Objects.nonNull(filter.get("position"))) {
-            predicates.add(builder.equal(rootEmployee.get("position"), filter.get("position")));
+            predicates.add(builder.equal(root.get("position"), filter.get("position")));
         }
         if (Objects.nonNull(filter.get("docCode"))) {
-            predicates.add(builder.equal(rootEmployee.get("employeeDocument").get("documentCatalog").get("code"),
+            predicates.add(builder.equal(root.get("employeeDocument").get("documentCatalog").get("code"),
                                          filter.get("docCode")));
         }
         if (Objects.nonNull(filter.get("citizenshipCode"))) {
-            predicates.add(builder.equal(rootEmployee.get("country").get("code"), filter.get("citizenshipCode")));
+            predicates.add(builder.equal(root.get("country").get("code"), filter.get("citizenshipCode")));
         }
 
         criteriaQuery
             .where(predicates.toArray(new Predicate[]{}))
-            .select(rootEmployee);
+            .select(root);
         TypedQuery<Employee> query = em.createQuery(criteriaQuery);
         return query.getResultList();
     }
@@ -213,12 +214,10 @@ public class EmployeeDaoImpl implements EmployeeDaoI {
                 updatedEmployee.setCountry(countryCatalog);
             }
             // фиксируем изменения
-            em.merge(updatedEmployee);
+            return em.merge(updatedEmployee);
         } else {
             // todo нужна ошибка обновления сотрудника
             throw new DaoException(ErrorCode.EMPLOYEE_SQL_BY_ID_NO_RESULT);
         }
-
-        return updatedEmployee;
     }
 }

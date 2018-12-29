@@ -133,8 +133,8 @@ public class RestTestsOrganizationController {
         final URI URI_SAVE = new URI(HOST + ":" + port + API_PATH + "save");
 
         OrganizationView newOrgView = new OrganizationView();
-        newOrgView.setName("СГАУ");
-        newOrgView.setFullName("ФГБОУ ВО Саратовский ГАУ");
+        newOrgView.setName("СГУ");
+        newOrgView.setFullName("ФГБОУ ВО Саратовский национальный исследовательский государственный университет имени Н.Г. Чернышевского");
         newOrgView.setInn("8994103143");
         newOrgView.setKpp("784561321");
         newOrgView.setAddress("г.Саратов");

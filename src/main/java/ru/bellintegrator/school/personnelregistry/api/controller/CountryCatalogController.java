@@ -2,7 +2,6 @@ package ru.bellintegrator.school.personnelregistry.api.controller;
 
 import ru.bellintegrator.school.personnelregistry.api.service.CountryCatalogServiceI;
 import ru.bellintegrator.school.personnelregistry.api.view.CountryCatalogView;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;

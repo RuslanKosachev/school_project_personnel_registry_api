@@ -21,6 +21,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected ErrorMessageResponse handleException(Exception e) {
         return new ErrorMessageResponse(e.getMessage());
     }

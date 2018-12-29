@@ -8,7 +8,6 @@ import ru.bellintegrator.school.personnelregistry.api.model.Office;
 import ru.bellintegrator.school.personnelregistry.api.model.Organization;
 import ru.bellintegrator.school.personnelregistry.api.model.mapper.MapperFacade;
 import ru.bellintegrator.school.personnelregistry.api.view.OfficeView;
-import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

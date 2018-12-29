@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 /**
  * Организация
@@ -81,7 +82,9 @@ public class OrganizationView {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (Objects.nonNull(name)) {
+            this.name = name.trim();
+        }
     }
 
     public String getFullName() {
@@ -89,7 +92,9 @@ public class OrganizationView {
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        if (Objects.nonNull(fullName)) {
+            this.fullName = fullName.trim();
+        }
     }
 
     public String getInn() {
@@ -97,7 +102,9 @@ public class OrganizationView {
     }
 
     public void setInn(String inn) {
-        this.inn = inn;
+        if (Objects.nonNull(inn)) {
+            this.inn = inn.trim();
+        }
     }
 
     public String getKpp() {
@@ -105,7 +112,9 @@ public class OrganizationView {
     }
 
     public void setKpp(String kpp) {
-        this.kpp = kpp;
+        if (Objects.nonNull(kpp)) {
+            this.kpp = kpp.trim();
+        }
     }
 
     public String getAddress() {
@@ -113,7 +122,9 @@ public class OrganizationView {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        if (Objects.nonNull(address)) {
+            this.address = address.trim();
+        }
     }
 
     public String getPhone() {
@@ -121,7 +132,9 @@ public class OrganizationView {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+        if (Objects.nonNull(phone)) {
+            this.phone = phone.trim();
+        }
     }
 
     public Boolean getIsActive() {

@@ -1,9 +1,12 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 
-import javax.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 /**
@@ -45,7 +48,9 @@ public class CountryCatalogView {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (Objects.nonNull(name)) {
+            this.name = name.trim();
+        }
     }
 
     public String getCode() {
@@ -53,7 +58,9 @@ public class CountryCatalogView {
     }
 
     public void setCode(String code) {
-        this.code = code;
+        if (Objects.nonNull(code)) {
+            this.code = code.trim().replaceFirst("^0+(?!$)", "");
+        }
     }
 
     @Override

@@ -40,7 +40,6 @@ public class IdentificationDocumentCatalogDaoImpl implements IdentificationDocum
         CriteriaQuery<IdentificationDocumentCatalog> criteriaQuery
                 = builder.createQuery(IdentificationDocumentCatalog.class);
         Root<IdentificationDocumentCatalog> root = criteriaQuery.from(IdentificationDocumentCatalog.class);
-        List<Predicate> predicates = new LinkedList<>();
         criteriaQuery
             .select(root);
         TypedQuery<IdentificationDocumentCatalog> query = em.createQuery(criteriaQuery);

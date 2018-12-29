@@ -38,23 +38,24 @@ public class OrganizationDaoImpl implements OrganizationDaoI {
         // составляем запрос по JPA Criteria API
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Organization> criteriaQuery = builder.createQuery(Organization.class);
-        Root<Organization> rootEmployee = criteriaQuery.from(Organization.class);
+        Root<Organization> root = criteriaQuery.from(Organization.class);
         List<Predicate> predicates = new LinkedList<>();
 
         if (Objects.nonNull(filter.get("name"))) {
-            predicates.add(builder.equal(rootEmployee.get("name"), filter.get("name")));
+            predicates.add(builder.equal(root.get("name"), filter.get("name")));
         }
         if (Objects.nonNull(filter.get("inn"))) {
-            predicates.add(builder.equal(rootEmployee.get("inn"), filter.get("inn")));
+            predicates.add(builder.equal(root.get("inn"), filter.get("inn")));
         }
         if (Objects.nonNull(filter.get("isActive"))) {
-            predicates.add(builder.equal(rootEmployee.get("isActive"), filter.get("isActive")));
+            predicates.add(builder.equal(root.get("isActive"), filter.get("isActive")));
         }
 
         criteriaQuery
             .where(predicates.toArray(new Predicate[]{}))
-            .select(rootEmployee);
+            .select(root);
         TypedQuery<Organization> query = em.createQuery(criteriaQuery);
+
         return query.getResultList();
     }
 
@@ -144,11 +145,9 @@ public class OrganizationDaoImpl implements OrganizationDaoI {
             }
 
             // фиксируем изменения
-            em.merge(updatedOrg);
+            return em.merge(updatedOrg);
         } else {
             throw new DaoException(ErrorCode.ORG_SQL_BY_ID_NO_RESULT);
         }
-
-        return updatedOrg;
     }
 }

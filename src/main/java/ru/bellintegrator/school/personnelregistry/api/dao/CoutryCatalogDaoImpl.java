@@ -39,7 +39,6 @@ public class CoutryCatalogDaoImpl implements CountryCatalogDaoI {
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<CountryCatalog> criteriaQuery = builder.createQuery(CountryCatalog.class);
         Root<CountryCatalog> root = criteriaQuery.from(CountryCatalog.class);
-        List<Predicate> predicates = new LinkedList<>();
         criteriaQuery
             .select(root);
         TypedQuery<CountryCatalog> query = em.createQuery(criteriaQuery);
@@ -68,7 +67,6 @@ public class CoutryCatalogDaoImpl implements CountryCatalogDaoI {
             CriteriaBuilder builder = em.getCriteriaBuilder();
             CriteriaQuery<CountryCatalog> criteriaQuery = builder.createQuery(CountryCatalog.class);
             Root<CountryCatalog> root = criteriaQuery.from(CountryCatalog.class);
-            List<Predicate> predicates = new LinkedList<>();
             criteriaQuery
                     .where(builder.equal(root.get("code"), code.trim()))
                     .select(root);

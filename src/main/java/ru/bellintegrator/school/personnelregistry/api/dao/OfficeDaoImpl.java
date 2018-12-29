@@ -38,25 +38,26 @@ public class OfficeDaoImpl implements OfficeDaoI {
         // составляем запрос по JPA Criteria API
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Office> criteriaQuery = builder.createQuery(Office.class);
-        Root<Office> rootEmployee = criteriaQuery.from(Office.class);
+        Root<Office> root = criteriaQuery.from(Office.class);
         List<Predicate> predicates = new LinkedList<>();
 
         if (Objects.nonNull(filter.get("orgId"))) {
-            predicates.add(builder.equal(rootEmployee.get("organization").get("id"), filter.get("orgId")));
+            predicates.add(builder.equal(root.get("organization").get("id"), filter.get("orgId")));
         }
         if (Objects.nonNull(filter.get("name"))) {
-            predicates.add(builder.equal(rootEmployee.get("name"), filter.get("name")));
+            predicates.add(builder.equal(root.get("name"), filter.get("name")));
         }
         if (Objects.nonNull(filter.get("phone"))) {
-            predicates.add(builder.equal(rootEmployee.get("phone"), filter.get("phone")));
+            predicates.add(builder.equal(root.get("phone"), filter.get("phone")));
         }
         if (Objects.nonNull(filter.get("isActive"))) {
-            predicates.add(builder.equal(rootEmployee.get("isActive"), filter.get("isActive")));
+            predicates.add(builder.equal(root.get("isActive"), filter.get("isActive")));
         }
         criteriaQuery
             .where(predicates.toArray(new Predicate[]{}))
-            .select(rootEmployee);
+            .select(root);
         TypedQuery<Office> query = em.createQuery(criteriaQuery);
+
         return query.getResultList();
     }
 
@@ -124,10 +125,9 @@ public class OfficeDaoImpl implements OfficeDaoI {
                 updatedOffice.setPhone(office.getPhone());
             }
             // фиксируем изменения
-            em.merge(updatedOffice);
+            return em.merge(updatedOffice);
         } else {
             throw new DaoException(ErrorCode.OFFICE_SQL_BY_ID_NO_RESULT);
         }
-        return updatedOffice;
     }
 }
