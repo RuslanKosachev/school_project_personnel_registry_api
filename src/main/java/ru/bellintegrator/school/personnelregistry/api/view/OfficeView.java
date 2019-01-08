@@ -5,6 +5,7 @@ import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -12,15 +13,26 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OfficeView {
+
+    public interface Filter { }
+
+    public interface Manipulation { }
+
+    public interface Create extends Manipulation { }
+
+    public interface Update extends Manipulation { }
+
     /**
      * Идентификатор
      */
+    @NotNull(groups = {Update.class}, message = ErrorMessage.OFFICE_V_ID_NULL)
     @Min(value = 1, message = ErrorMessage.OFFICE_V_ID_NEGATIVE_OR_ZERO)
     private Integer id;
 
     /**
      * Наименование
      */
+    @NotNull(groups = {Manipulation.class}, message = ErrorMessage.OFFICE_V_NAME_NULL)
     @Size(min = 1, message = ErrorMessage.OFFICE_V_NAME_MIN)
     @Size(max = 100, message = ErrorMessage.OFFICE_V_NAME_MAX)
     private String name;
@@ -28,6 +40,7 @@ public class OfficeView {
     /**
      * Адрес
      */
+    @NotNull(groups = {Manipulation.class}, message = ErrorMessage.OFFICE_V_ADDRESS_NULL)
     @Size(min = 1, message = ErrorMessage.OFFICE_V_ADDRESS_MIN)
     @Size(max = 350, message = ErrorMessage.OFFICE_V_ADDRESS_MAX)
     private String address;
@@ -47,6 +60,7 @@ public class OfficeView {
     /**
      * идентификатор организации
      */
+    @NotNull(groups = {Filter.class, Create.class}, message = ErrorMessage.ORG_V_ID_NULL)
     @Min(value = 1, message = ErrorMessage.ORG_V_ID_NEGATIVE_OR_ZERO)
     private Integer orgId;
 

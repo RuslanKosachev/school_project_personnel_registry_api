@@ -1,13 +1,13 @@
 package ru.bellintegrator.school.personnelregistry.api.view;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
 import ru.bellintegrator.school.personnelregistry.api.error.ErrorMessage;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import io.swagger.annotations.ApiModel;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -21,15 +21,26 @@ import java.util.Objects;
 @ApiModel(description = "Сотрудник")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserView {
+
+    public interface Filter { }
+
+    public interface Manipulation { }
+
+    public interface Create extends Manipulation { }
+
+    public interface Update extends Manipulation { }
+
     /**
      * Идентификатор
      */
+    @NotNull(groups = {Update.class}, message = ErrorMessage.USER_V_ID_NULL)
     @Min(value = 1, message = ErrorMessage.USER_V_ID_NEGATIVE_OR_ZERO)
     private Integer id;
 
     /**
      * Имя
      */
+    @NotNull(groups = {Manipulation.class}, message = ErrorMessage.USER_V_FNAME_NULL)
     @Size(min = 1, message = ErrorMessage.USER_V_FNAME_MIN)
     @Size(max = 50, message = ErrorMessage.USER_V_FNAME_MAX)
     private String firstName;
@@ -51,6 +62,7 @@ public class UserView {
     /**
      * Должность
      */
+    @NotNull(groups = {Manipulation.class}, message = ErrorMessage.USER_V_POSITION_NULL)
     @Size(min = 1, message = ErrorMessage.USER_V_POSITION_MIN)
     @Size(max = 100, message = ErrorMessage.USER_V_POSITION_MAX)
     private String position;
@@ -113,6 +125,7 @@ public class UserView {
      */
     private Boolean isIdentified;
 
+    @NotNull(groups = {Filter.class, Create.class}, message = ErrorMessage.OFFICE_V_ID_NULL)
     @Min(value = 1, message = ErrorMessage.OFFICE_V_ID_NEGATIVE_OR_ZERO)
     private Integer officeId;
 

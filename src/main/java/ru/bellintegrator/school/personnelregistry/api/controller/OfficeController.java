@@ -3,9 +3,9 @@ package ru.bellintegrator.school.personnelregistry.api.controller;
 import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
 import ru.bellintegrator.school.personnelregistry.api.service.OfficeServiceI;
 import ru.bellintegrator.school.personnelregistry.api.view.OfficeView;
-import ru.bellintegrator.school.personnelregistry.api.error.ErrorCode;
 import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Objects;
+import java.util.List;;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -40,10 +39,7 @@ public class OfficeController {
      * @return список объектов {@link OfficeView}
      */
     @PostMapping("/list")
-    public List<OfficeView> getList(@Valid @RequestBody OfficeView filter) throws ViewException {
-        if (Objects.isNull(filter.getOrgId())) {
-            throw new ViewException(ErrorCode.ORG_V_ID_NULL);
-        }
+    public List<OfficeView> getList(@Validated(OfficeView.Filter.class) @RequestBody OfficeView filter) {
         return officeService.getList(filter);
     }
 
@@ -65,17 +61,8 @@ public class OfficeController {
      * @return при успешном обновлении значение true
      */
     @PostMapping("/save")
-    public Boolean create(@Valid @RequestBody OfficeView view) throws ViewException, DaoException {
-        if (Objects.isNull(view.getOrgId())) {
-            throw new ViewException(ErrorCode.ORG_V_ID_NULL);
-        }
-        if (Objects.isNull(view.getName())) {
-            throw new ViewException(ErrorCode.OFFICE_V_NAME_NULL);
-        }
-        if (Objects.isNull(view.getAddress())) {
-            throw new ViewException(ErrorCode.OFFICE_V_ADDRESS_NULL);
-        }
-
+    public Boolean create(@Validated(OfficeView.Create.class) @RequestBody OfficeView view)
+            throws ViewException, DaoException {
         return officeService.create(view);
     }
 
@@ -86,17 +73,8 @@ public class OfficeController {
      * @return при успешном обновлении значение - true
      */
     @PostMapping("/update")
-    public Boolean update(@Valid @RequestBody OfficeView view) throws ViewException, DaoException {
-        if (Objects.isNull(view.getId())) {
-            throw new ViewException(ErrorCode.OFFICE_V_ID_NULL);
-        }
-        if (Objects.isNull(view.getName())) {
-            throw new ViewException(ErrorCode.OFFICE_V_NAME_NULL);
-        }
-        if (Objects.isNull(view.getAddress())) {
-            throw new ViewException(ErrorCode.OFFICE_V_ADDRESS_NULL);
-        }
-
+    public Boolean update(@Validated(OfficeView.Update.class) @RequestBody OfficeView view)
+            throws ViewException, DaoException {
         return officeService.update(view);
     }
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -16,15 +17,24 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrganizationView {
+
+    public interface Filter { }
+
+    public interface Create { }
+
+    public interface Update extends Create { }
+
     /**
      * Идентификатор
      */
+    @NotNull(groups = {Update.class}, message = ErrorMessage.ORG_V_ID_NULL)
     @Min(value = 1, message = ErrorMessage.ORG_V_ID_NEGATIVE_OR_ZERO)
     private Integer id;
 
     /**
      * Короткое наименование
      */
+    @NotNull(groups = {Filter.class, Create.class}, message = ErrorMessage.ORG_V_NAME_NULL)
     @Size(min = 1, message = ErrorMessage.ORG_V_NAME_MIN)
     @Size(max = 100, message = ErrorMessage.ORG_V_NAME_MAX)
     private String name;
@@ -32,6 +42,7 @@ public class OrganizationView {
     /**
      * Полное наименование
      */
+    @NotNull(groups = {Create.class}, message = ErrorMessage.ORG_V_FULL_NAME_NULL)
     @Size(min = 1, message = ErrorMessage.ORG_V_FULL_NAME_MIN)
     @Size(max = 350, message = ErrorMessage.ORG_V_FULL_NAME_MAX)
     private String fullName;
@@ -39,6 +50,7 @@ public class OrganizationView {
     /**
      * Идентификационный номер налогоплательщика
      */
+    @NotNull(groups = {Create.class}, message = ErrorMessage.ORG_V_INN_NULL)
     @Pattern(regexp = "\\d{10,12}",
              message = ErrorMessage.ORG_V_INN_PATTERN)
     private String inn;
@@ -46,6 +58,7 @@ public class OrganizationView {
     /**
      *  Код причины постановки на учет в налоговых органах
      */
+    @NotNull(groups = {Create.class}, message = ErrorMessage.ORG_V_KPP_NULL)
     @Pattern(regexp = "\\d{9}",
             message = ErrorMessage.ORG_V_KPP_PATTERN)
     private String kpp;
@@ -53,6 +66,7 @@ public class OrganizationView {
     /**
      * Адрес
      */
+    @NotNull(groups = {Create.class}, message = ErrorMessage.ORG_V_ADDRESS_NULL)
     @Size(min = 1, message = ErrorMessage.ORG_V_ADDRESS_MIN)
     @Size(max = 350, message = ErrorMessage.ORG_V_ADDRESS_MAX)
     private String address;

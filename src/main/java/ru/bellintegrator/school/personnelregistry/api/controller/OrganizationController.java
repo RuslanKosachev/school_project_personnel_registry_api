@@ -1,21 +1,21 @@
 package ru.bellintegrator.school.personnelregistry.api.controller;
 
+import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
+import ru.bellintegrator.school.personnelregistry.api.service.OrganizationServiceI;
+import ru.bellintegrator.school.personnelregistry.api.view.OrganizationView;
+import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import ru.bellintegrator.school.personnelregistry.api.dao.exception.DaoException;
-import ru.bellintegrator.school.personnelregistry.api.service.OrganizationServiceI;
-import ru.bellintegrator.school.personnelregistry.api.view.OrganizationView;
-import ru.bellintegrator.school.personnelregistry.api.error.ErrorCode;
-import ru.bellintegrator.school.personnelregistry.api.view.exception.ViewException;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Objects;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -40,10 +40,7 @@ public class OrganizationController {
      * @return список объектов {@link OrganizationView}
      */
     @PostMapping("/list")
-    public List<OrganizationView> getList(@Valid @RequestBody OrganizationView filter) throws ViewException {
-        if (Objects.isNull(filter.getName())) {
-            throw new ViewException(ErrorCode.ORG_V_NAME_NULL);
-        }
+    public List<OrganizationView> getList(@Validated(OrganizationView.Filter.class) @RequestBody OrganizationView filter) {
         return organizationService.getList(filter);
     }
 
@@ -65,22 +62,8 @@ public class OrganizationController {
      * @return при успешном обновлении значение true
      */
     @PostMapping("/save")
-    public Boolean create(@Valid @RequestBody OrganizationView view) throws ViewException, DaoException {
-        if (Objects.isNull(view.getName())) {
-            throw new ViewException(ErrorCode.ORG_V_NAME_NULL);
-        }
-        if (Objects.isNull(view.getFullName())) {
-            throw new ViewException(ErrorCode.ORG_V_FULL_NAME_NULL);
-        }
-        if (Objects.isNull(view.getInn())) {
-            throw new ViewException(ErrorCode.ORG_V_INN_NULL);
-        }
-        if (Objects.isNull(view.getKpp())) {
-            throw new ViewException(ErrorCode.ORG_V_KPP_NULL);
-        }
-        if (Objects.isNull(view.getAddress())) {
-            throw new ViewException(ErrorCode.ORG_V_ADDRESS_NULL);
-        }
+    public Boolean create(@Validated(OrganizationView.Create.class) @RequestBody OrganizationView view)
+            throws ViewException, DaoException {
         return organizationService.create(view);
     }
 
@@ -91,25 +74,8 @@ public class OrganizationController {
      * @return при успешном обновлении значение - true
      */
     @PostMapping("/update")
-    public Boolean update(@Valid @RequestBody OrganizationView view) throws ViewException, DaoException {
-        if (Objects.isNull(view.getId())) {
-            throw new ViewException(ErrorCode.ORG_V_ID_NULL);
-        }
-        if (Objects.isNull(view.getName())) {
-            throw new ViewException(ErrorCode.ORG_V_NAME_NULL);
-        }
-        if (Objects.isNull(view.getFullName())) {
-            throw new ViewException(ErrorCode.ORG_V_FULL_NAME_NULL);
-        }
-        if (Objects.isNull(view.getInn())) {
-            throw new ViewException(ErrorCode.ORG_V_INN_NULL);
-        }
-        if (Objects.isNull(view.getKpp())) {
-            throw new ViewException(ErrorCode.ORG_V_KPP_NULL);
-        }
-        if (Objects.isNull(view.getAddress())) {
-            throw new ViewException(ErrorCode.ORG_V_ADDRESS_NULL);
-        }
+    public Boolean update(@Validated(OrganizationView.Update.class) @RequestBody OrganizationView view)
+            throws ViewException, DaoException {
         return organizationService.update(view);
     }
 }
